@@ -10,6 +10,17 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: movies
+    description: Movie management
+  - name: series
+    description: TV Series management
+  - name: seasons
+    description: Season management
+  - name: episodes
+    description: Episode management
+  - name: categories
+    description: Category management
+
 paths:
   /healthz:
     get:
@@ -24,6 +35,725 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /movies:
+    get:
+      operationId: listMovies
+      tags: [movies]
+      summary: List all movies
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+        - in: query
+          name: featured
+          schema:
+            type: string
+        - in: query
+          name: trending
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+    post:
+      operationId: createMovie
+      tags: [movies]
+      summary: Create a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /movies/{id}:
+    get:
+      operationId: getMovie
+      tags: [movies]
+      summary: Get a movie by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Movie found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateMovie
+      tags: [movies]
+      summary: Update a movie
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteMovie
+      tags: [movies]
+      summary: Delete a movie
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /movies/{id}/publish:
+    patch:
+      operationId: publishMovie
+      tags: [movies]
+      summary: Publish a movie
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /movies/{id}/draft:
+    patch:
+      operationId: draftMovie
+      tags: [movies]
+      summary: Set a movie to draft
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Set to draft
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /series:
+    get:
+      operationId: listSeries
+      tags: [series]
+      summary: List all TV series
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+        - in: query
+          name: featured
+          schema:
+            type: string
+        - in: query
+          name: trending
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of series
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Series"
+    post:
+      operationId: createSeries
+      tags: [series]
+      summary: Create a TV series
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeriesInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Series"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /series/{id}:
+    get:
+      operationId: getOneSeries
+      tags: [series]
+      summary: Get a series by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Series found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Series"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateSeries
+      tags: [series]
+      summary: Update a series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeriesUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Series"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteSeries
+      tags: [series]
+      summary: Delete a series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /series/{id}/publish:
+    patch:
+      operationId: publishSeries
+      tags: [series]
+      summary: Publish a series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Series"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /series/{id}/draft:
+    patch:
+      operationId: draftSeries
+      tags: [series]
+      summary: Set a series to draft
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Set to draft
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Series"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /series/{id}/seasons:
+    get:
+      operationId: listSeasons
+      tags: [seasons]
+      summary: List seasons for a series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of seasons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Season"
+    post:
+      operationId: createSeason
+      tags: [seasons]
+      summary: Create a season for a series
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeasonInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Season"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /seasons/{id}:
+    get:
+      operationId: getSeason
+      tags: [seasons]
+      summary: Get a season by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Season found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Season"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateSeason
+      tags: [seasons]
+      summary: Update a season
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SeasonUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Season"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteSeason
+      tags: [seasons]
+      summary: Delete a season
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /seasons/{id}/episodes:
+    get:
+      operationId: listEpisodes
+      tags: [episodes]
+      summary: List episodes for a season
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of episodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Episode"
+    post:
+      operationId: createEpisode
+      tags: [episodes]
+      summary: Create an episode for a season
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EpisodeInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /episodes/{id}:
+    get:
+      operationId: getEpisode
+      tags: [episodes]
+      summary: Get an episode by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Episode found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateEpisode
+      tags: [episodes]
+      summary: Update an episode
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EpisodeUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Episode"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteEpisode
+      tags: [episodes]
+      summary: Delete an episode
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+    post:
+      operationId: createCategory
+      tags: [categories]
+      summary: Create a category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /categories/{id}:
+    get:
+      operationId: getCategory
+      tags: [categories]
+      summary: Get a category by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Category found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateCategory
+      tags: [categories]
+      summary: Update a category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteCategory
+      tags: [categories]
+      summary: Delete a category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [movies]
+      summary: Get dashboard stats
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +764,496 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    Stats:
+      type: object
+      properties:
+        totalMovies:
+          type: integer
+        totalSeries:
+          type: integer
+        publishedMovies:
+          type: integer
+        publishedSeries:
+          type: integer
+        totalEpisodes:
+          type: integer
+        totalCategories:
+          type: integer
+        totalUsers:
+          type: integer
+      required:
+        - totalMovies
+        - totalSeries
+        - publishedMovies
+        - publishedSeries
+        - totalEpisodes
+        - totalCategories
+        - totalUsers
+
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        year:
+          type: string
+        genre:
+          type: string
+        rating:
+          type: ["string", "null"]
+        duration:
+          type: ["string", "null"]
+        description:
+          type: string
+        longDescription:
+          type: ["string", "null"]
+        posterUrl:
+          type: ["string", "null"]
+        backdropUrl:
+          type: ["string", "null"]
+        trailerUrl:
+          type: ["string", "null"]
+        embedUrl:
+          type: ["string", "null"]
+        quality:
+          type: string
+        director:
+          type: ["string", "null"]
+        tags:
+          type: ["array", "null"]
+          items:
+            type: string
+        status:
+          type: string
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+        isMostLiked:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - title
+        - year
+        - genre
+        - description
+        - quality
+        - status
+        - isFeatured
+        - isTrending
+        - isMostLiked
+        - createdAt
+        - updatedAt
+
+    MovieInput:
+      type: object
+      properties:
+        title:
+          type: string
+        year:
+          type: string
+        genre:
+          type: string
+        rating:
+          type: string
+        duration:
+          type: string
+        description:
+          type: string
+        longDescription:
+          type: string
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        embedUrl:
+          type: string
+        quality:
+          type: string
+        director:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+        isMostLiked:
+          type: boolean
+      required:
+        - title
+        - year
+        - genre
+
+    MovieUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        year:
+          type: string
+        genre:
+          type: string
+        rating:
+          type: string
+        duration:
+          type: string
+        description:
+          type: string
+        longDescription:
+          type: string
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        embedUrl:
+          type: string
+        quality:
+          type: string
+        director:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+        isMostLiked:
+          type: boolean
+
+    Series:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        year:
+          type: string
+        genre:
+          type: string
+        rating:
+          type: ["string", "null"]
+        seasonsCount:
+          type: integer
+        description:
+          type: string
+        longDescription:
+          type: ["string", "null"]
+        posterUrl:
+          type: ["string", "null"]
+        backdropUrl:
+          type: ["string", "null"]
+        trailerUrl:
+          type: ["string", "null"]
+        quality:
+          type: string
+        director:
+          type: ["string", "null"]
+        tags:
+          type: ["array", "null"]
+          items:
+            type: string
+        status:
+          type: string
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+        isMostLiked:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - title
+        - year
+        - genre
+        - description
+        - seasonsCount
+        - quality
+        - status
+        - isFeatured
+        - isTrending
+        - isMostLiked
+        - createdAt
+        - updatedAt
+
+    SeriesInput:
+      type: object
+      properties:
+        title:
+          type: string
+        year:
+          type: string
+        genre:
+          type: string
+        rating:
+          type: string
+        seasonsCount:
+          type: integer
+        description:
+          type: string
+        longDescription:
+          type: string
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        quality:
+          type: string
+        director:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+        isMostLiked:
+          type: boolean
+      required:
+        - title
+        - year
+        - genre
+
+    SeriesUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        year:
+          type: string
+        genre:
+          type: string
+        rating:
+          type: string
+        seasonsCount:
+          type: integer
+        description:
+          type: string
+        longDescription:
+          type: string
+        posterUrl:
+          type: string
+        backdropUrl:
+          type: string
+        trailerUrl:
+          type: string
+        quality:
+          type: string
+        director:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        isFeatured:
+          type: boolean
+        isTrending:
+          type: boolean
+        isMostLiked:
+          type: boolean
+
+    Season:
+      type: object
+      properties:
+        id:
+          type: integer
+        seriesId:
+          type: integer
+        seasonNumber:
+          type: integer
+        title:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        episodesCount:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - seriesId
+        - seasonNumber
+        - episodesCount
+        - createdAt
+        - updatedAt
+
+    SeasonInput:
+      type: object
+      properties:
+        seasonNumber:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+      required:
+        - seasonNumber
+
+    SeasonUpdate:
+      type: object
+      properties:
+        seasonNumber:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+
+    Episode:
+      type: object
+      properties:
+        id:
+          type: integer
+        seriesId:
+          type: integer
+        seasonId:
+          type: integer
+        episodeNumber:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        duration:
+          type: ["string", "null"]
+        embedUrl:
+          type: ["string", "null"]
+        thumbnailUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - seriesId
+        - seasonId
+        - episodeNumber
+        - title
+        - status
+        - createdAt
+        - updatedAt
+
+    EpisodeInput:
+      type: object
+      properties:
+        seriesId:
+          type: integer
+        episodeNumber:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        duration:
+          type: string
+        embedUrl:
+          type: string
+        thumbnailUrl:
+          type: string
+        status:
+          type: string
+      required:
+        - seriesId
+        - episodeNumber
+        - title
+
+    EpisodeUpdate:
+      type: object
+      properties:
+        episodeNumber:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        duration:
+          type: string
+        embedUrl:
+          type: string
+        thumbnailUrl:
+          type: string
+        status:
+          type: string
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - slug
+        - createdAt
+        - updatedAt
+
+    CategoryInput:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+        - name
+        - slug
+
+    CategoryUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string

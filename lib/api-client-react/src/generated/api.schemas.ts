@@ -8,3 +8,257 @@
 export interface HealthStatus {
   status: string;
 }
+
+export interface ErrorResponse {
+  error: string;
+}
+
+export interface Stats {
+  totalMovies: number;
+  totalSeries: number;
+  publishedMovies: number;
+  publishedSeries: number;
+  totalEpisodes: number;
+  totalCategories: number;
+  totalUsers: number;
+}
+
+export interface Movie {
+  id: number;
+  title: string;
+  year: string;
+  genre: string;
+  /** @nullable */
+  rating?: string | null;
+  /** @nullable */
+  duration?: string | null;
+  description: string;
+  /** @nullable */
+  longDescription?: string | null;
+  /** @nullable */
+  posterUrl?: string | null;
+  /** @nullable */
+  backdropUrl?: string | null;
+  /** @nullable */
+  trailerUrl?: string | null;
+  /** @nullable */
+  embedUrl?: string | null;
+  quality: string;
+  /** @nullable */
+  director?: string | null;
+  /** @nullable */
+  tags?: string[] | null;
+  status: string;
+  isFeatured: boolean;
+  isTrending: boolean;
+  isMostLiked: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MovieInput {
+  title: string;
+  year: string;
+  genre: string;
+  rating?: string;
+  duration?: string;
+  description?: string;
+  longDescription?: string;
+  posterUrl?: string;
+  backdropUrl?: string;
+  trailerUrl?: string;
+  embedUrl?: string;
+  quality?: string;
+  director?: string;
+  tags?: string[];
+  status?: string;
+  isFeatured?: boolean;
+  isTrending?: boolean;
+  isMostLiked?: boolean;
+}
+
+export interface MovieUpdate {
+  title?: string;
+  year?: string;
+  genre?: string;
+  rating?: string;
+  duration?: string;
+  description?: string;
+  longDescription?: string;
+  posterUrl?: string;
+  backdropUrl?: string;
+  trailerUrl?: string;
+  embedUrl?: string;
+  quality?: string;
+  director?: string;
+  tags?: string[];
+  status?: string;
+  isFeatured?: boolean;
+  isTrending?: boolean;
+  isMostLiked?: boolean;
+}
+
+export interface Series {
+  id: number;
+  title: string;
+  year: string;
+  genre: string;
+  /** @nullable */
+  rating?: string | null;
+  seasonsCount: number;
+  description: string;
+  /** @nullable */
+  longDescription?: string | null;
+  /** @nullable */
+  posterUrl?: string | null;
+  /** @nullable */
+  backdropUrl?: string | null;
+  /** @nullable */
+  trailerUrl?: string | null;
+  quality: string;
+  /** @nullable */
+  director?: string | null;
+  /** @nullable */
+  tags?: string[] | null;
+  status: string;
+  isFeatured: boolean;
+  isTrending: boolean;
+  isMostLiked: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SeriesInput {
+  title: string;
+  year: string;
+  genre: string;
+  rating?: string;
+  seasonsCount?: number;
+  description?: string;
+  longDescription?: string;
+  posterUrl?: string;
+  backdropUrl?: string;
+  trailerUrl?: string;
+  quality?: string;
+  director?: string;
+  tags?: string[];
+  status?: string;
+  isFeatured?: boolean;
+  isTrending?: boolean;
+  isMostLiked?: boolean;
+}
+
+export interface SeriesUpdate {
+  title?: string;
+  year?: string;
+  genre?: string;
+  rating?: string;
+  seasonsCount?: number;
+  description?: string;
+  longDescription?: string;
+  posterUrl?: string;
+  backdropUrl?: string;
+  trailerUrl?: string;
+  quality?: string;
+  director?: string;
+  tags?: string[];
+  status?: string;
+  isFeatured?: boolean;
+  isTrending?: boolean;
+  isMostLiked?: boolean;
+}
+
+export interface Season {
+  id: number;
+  seriesId: number;
+  seasonNumber: number;
+  /** @nullable */
+  title?: string | null;
+  /** @nullable */
+  description?: string | null;
+  episodesCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SeasonInput {
+  seasonNumber: number;
+  title?: string;
+  description?: string;
+}
+
+export interface SeasonUpdate {
+  seasonNumber?: number;
+  title?: string;
+  description?: string;
+}
+
+export interface Episode {
+  id: number;
+  seriesId: number;
+  seasonId: number;
+  episodeNumber: number;
+  title: string;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  duration?: string | null;
+  /** @nullable */
+  embedUrl?: string | null;
+  /** @nullable */
+  thumbnailUrl?: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EpisodeInput {
+  seriesId: number;
+  episodeNumber: number;
+  title: string;
+  description?: string;
+  duration?: string;
+  embedUrl?: string;
+  thumbnailUrl?: string;
+  status?: string;
+}
+
+export interface EpisodeUpdate {
+  episodeNumber?: number;
+  title?: string;
+  description?: string;
+  duration?: string;
+  embedUrl?: string;
+  thumbnailUrl?: string;
+  status?: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CategoryInput {
+  name: string;
+  slug: string;
+}
+
+export interface CategoryUpdate {
+  name?: string;
+  slug?: string;
+}
+
+export type ListMoviesParams = {
+  status?: string;
+  featured?: string;
+  trending?: string;
+};
+
+export type ListSeriesParams = {
+  status?: string;
+  featured?: string;
+  trending?: string;
+};

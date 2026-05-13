@@ -14,3 +14,674 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary List all movies
+ */
+export const ListMoviesQueryParams = zod.object({
+  status: zod.coerce.string().optional(),
+  featured: zod.coerce.string().optional(),
+  trending: zod.coerce.string().optional(),
+});
+
+export const ListMoviesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+export const ListMoviesResponse = zod.array(ListMoviesResponseItem);
+
+/**
+ * @summary Create a movie
+ */
+export const CreateMovieBody = zod.object({
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().optional(),
+  duration: zod.string().optional(),
+  description: zod.string().optional(),
+  longDescription: zod.string().optional(),
+  posterUrl: zod.string().optional(),
+  backdropUrl: zod.string().optional(),
+  trailerUrl: zod.string().optional(),
+  embedUrl: zod.string().optional(),
+  quality: zod.string().optional(),
+  director: zod.string().optional(),
+  tags: zod.array(zod.string()).optional(),
+  status: zod.string().optional(),
+  isFeatured: zod.boolean().optional(),
+  isTrending: zod.boolean().optional(),
+  isMostLiked: zod.boolean().optional(),
+});
+
+/**
+ * @summary Get a movie by ID
+ */
+export const GetMovieParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetMovieResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Update a movie
+ */
+export const UpdateMovieParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateMovieBody = zod.object({
+  title: zod.string().optional(),
+  year: zod.string().optional(),
+  genre: zod.string().optional(),
+  rating: zod.string().optional(),
+  duration: zod.string().optional(),
+  description: zod.string().optional(),
+  longDescription: zod.string().optional(),
+  posterUrl: zod.string().optional(),
+  backdropUrl: zod.string().optional(),
+  trailerUrl: zod.string().optional(),
+  embedUrl: zod.string().optional(),
+  quality: zod.string().optional(),
+  director: zod.string().optional(),
+  tags: zod.array(zod.string()).optional(),
+  status: zod.string().optional(),
+  isFeatured: zod.boolean().optional(),
+  isTrending: zod.boolean().optional(),
+  isMostLiked: zod.boolean().optional(),
+});
+
+export const UpdateMovieResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Delete a movie
+ */
+export const DeleteMovieParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Publish a movie
+ */
+export const PublishMovieParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const PublishMovieResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Set a movie to draft
+ */
+export const DraftMovieParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DraftMovieResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary List all TV series
+ */
+export const ListSeriesQueryParams = zod.object({
+  status: zod.coerce.string().optional(),
+  featured: zod.coerce.string().optional(),
+  trending: zod.coerce.string().optional(),
+});
+
+export const ListSeriesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  seasonsCount: zod.number(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+export const ListSeriesResponse = zod.array(ListSeriesResponseItem);
+
+/**
+ * @summary Create a TV series
+ */
+export const CreateSeriesBody = zod.object({
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().optional(),
+  seasonsCount: zod.number().optional(),
+  description: zod.string().optional(),
+  longDescription: zod.string().optional(),
+  posterUrl: zod.string().optional(),
+  backdropUrl: zod.string().optional(),
+  trailerUrl: zod.string().optional(),
+  quality: zod.string().optional(),
+  director: zod.string().optional(),
+  tags: zod.array(zod.string()).optional(),
+  status: zod.string().optional(),
+  isFeatured: zod.boolean().optional(),
+  isTrending: zod.boolean().optional(),
+  isMostLiked: zod.boolean().optional(),
+});
+
+/**
+ * @summary Get a series by ID
+ */
+export const GetOneSeriesParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetOneSeriesResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  seasonsCount: zod.number(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Update a series
+ */
+export const UpdateSeriesParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateSeriesBody = zod.object({
+  title: zod.string().optional(),
+  year: zod.string().optional(),
+  genre: zod.string().optional(),
+  rating: zod.string().optional(),
+  seasonsCount: zod.number().optional(),
+  description: zod.string().optional(),
+  longDescription: zod.string().optional(),
+  posterUrl: zod.string().optional(),
+  backdropUrl: zod.string().optional(),
+  trailerUrl: zod.string().optional(),
+  quality: zod.string().optional(),
+  director: zod.string().optional(),
+  tags: zod.array(zod.string()).optional(),
+  status: zod.string().optional(),
+  isFeatured: zod.boolean().optional(),
+  isTrending: zod.boolean().optional(),
+  isMostLiked: zod.boolean().optional(),
+});
+
+export const UpdateSeriesResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  seasonsCount: zod.number(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Delete a series
+ */
+export const DeleteSeriesParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Publish a series
+ */
+export const PublishSeriesParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const PublishSeriesResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  seasonsCount: zod.number(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Set a series to draft
+ */
+export const DraftSeriesParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const DraftSeriesResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  year: zod.string(),
+  genre: zod.string(),
+  rating: zod.string().nullish(),
+  seasonsCount: zod.number(),
+  description: zod.string(),
+  longDescription: zod.string().nullish(),
+  posterUrl: zod.string().nullish(),
+  backdropUrl: zod.string().nullish(),
+  trailerUrl: zod.string().nullish(),
+  quality: zod.string(),
+  director: zod.string().nullish(),
+  tags: zod.array(zod.string()).nullish(),
+  status: zod.string(),
+  isFeatured: zod.boolean(),
+  isTrending: zod.boolean(),
+  isMostLiked: zod.boolean(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary List seasons for a series
+ */
+export const ListSeasonsParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const ListSeasonsResponseItem = zod.object({
+  id: zod.number(),
+  seriesId: zod.number(),
+  seasonNumber: zod.number(),
+  title: zod.string().nullish(),
+  description: zod.string().nullish(),
+  episodesCount: zod.number(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+export const ListSeasonsResponse = zod.array(ListSeasonsResponseItem);
+
+/**
+ * @summary Create a season for a series
+ */
+export const CreateSeasonParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const CreateSeasonBody = zod.object({
+  seasonNumber: zod.number(),
+  title: zod.string().optional(),
+  description: zod.string().optional(),
+});
+
+/**
+ * @summary Get a season by ID
+ */
+export const GetSeasonParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetSeasonResponse = zod.object({
+  id: zod.number(),
+  seriesId: zod.number(),
+  seasonNumber: zod.number(),
+  title: zod.string().nullish(),
+  description: zod.string().nullish(),
+  episodesCount: zod.number(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Update a season
+ */
+export const UpdateSeasonParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateSeasonBody = zod.object({
+  seasonNumber: zod.number().optional(),
+  title: zod.string().optional(),
+  description: zod.string().optional(),
+});
+
+export const UpdateSeasonResponse = zod.object({
+  id: zod.number(),
+  seriesId: zod.number(),
+  seasonNumber: zod.number(),
+  title: zod.string().nullish(),
+  description: zod.string().nullish(),
+  episodesCount: zod.number(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Delete a season
+ */
+export const DeleteSeasonParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List episodes for a season
+ */
+export const ListEpisodesParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const ListEpisodesResponseItem = zod.object({
+  id: zod.number(),
+  seriesId: zod.number(),
+  seasonId: zod.number(),
+  episodeNumber: zod.number(),
+  title: zod.string(),
+  description: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  thumbnailUrl: zod.string().nullish(),
+  status: zod.string(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+export const ListEpisodesResponse = zod.array(ListEpisodesResponseItem);
+
+/**
+ * @summary Create an episode for a season
+ */
+export const CreateEpisodeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const CreateEpisodeBody = zod.object({
+  seriesId: zod.number(),
+  episodeNumber: zod.number(),
+  title: zod.string(),
+  description: zod.string().optional(),
+  duration: zod.string().optional(),
+  embedUrl: zod.string().optional(),
+  thumbnailUrl: zod.string().optional(),
+  status: zod.string().optional(),
+});
+
+/**
+ * @summary Get an episode by ID
+ */
+export const GetEpisodeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetEpisodeResponse = zod.object({
+  id: zod.number(),
+  seriesId: zod.number(),
+  seasonId: zod.number(),
+  episodeNumber: zod.number(),
+  title: zod.string(),
+  description: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  thumbnailUrl: zod.string().nullish(),
+  status: zod.string(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Update an episode
+ */
+export const UpdateEpisodeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateEpisodeBody = zod.object({
+  episodeNumber: zod.number().optional(),
+  title: zod.string().optional(),
+  description: zod.string().optional(),
+  duration: zod.string().optional(),
+  embedUrl: zod.string().optional(),
+  thumbnailUrl: zod.string().optional(),
+  status: zod.string().optional(),
+});
+
+export const UpdateEpisodeResponse = zod.object({
+  id: zod.number(),
+  seriesId: zod.number(),
+  seasonId: zod.number(),
+  episodeNumber: zod.number(),
+  title: zod.string(),
+  description: zod.string().nullish(),
+  duration: zod.string().nullish(),
+  embedUrl: zod.string().nullish(),
+  thumbnailUrl: zod.string().nullish(),
+  status: zod.string(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Delete an episode
+ */
+export const DeleteEpisodeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all categories
+ */
+export const ListCategoriesResponseItem = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  slug: zod.string(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem);
+
+/**
+ * @summary Create a category
+ */
+export const CreateCategoryBody = zod.object({
+  name: zod.string(),
+  slug: zod.string(),
+});
+
+/**
+ * @summary Get a category by ID
+ */
+export const GetCategoryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetCategoryResponse = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  slug: zod.string(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Update a category
+ */
+export const UpdateCategoryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateCategoryBody = zod.object({
+  name: zod.string().optional(),
+  slug: zod.string().optional(),
+});
+
+export const UpdateCategoryResponse = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  slug: zod.string(),
+  createdAt: zod.string(),
+  updatedAt: zod.string(),
+});
+
+/**
+ * @summary Delete a category
+ */
+export const DeleteCategoryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Get dashboard stats
+ */
+export const GetStatsResponse = zod.object({
+  totalMovies: zod.number(),
+  totalSeries: zod.number(),
+  publishedMovies: zod.number(),
+  publishedSeries: zod.number(),
+  totalEpisodes: zod.number(),
+  totalCategories: zod.number(),
+  totalUsers: zod.number(),
+});

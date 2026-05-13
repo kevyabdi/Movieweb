@@ -1,0 +1,726 @@
+export interface CastMember {
+  name: string;
+  role: string;
+  avatarUrl: string;
+}
+
+export interface MediaItem {
+  id: string;
+  title: string;
+  year: string;
+  genre: string;
+  rating: string;
+  duration?: string;
+  seasons?: number;
+  description: string;
+  longDescription?: string;
+  posterUrl: string;
+  backdropUrl: string;
+  type: 'movie' | 'tv';
+  quality?: '4K' | 'HD' | 'CAM';
+  director?: string;
+  cast?: CastMember[];
+  tags?: string[];
+  isFeatured?: boolean;
+  isTrending?: boolean;
+  isMostLiked?: boolean;
+  isNew?: boolean;
+  createdAt?: string;
+}
+
+const TMDB_IMG = 'https://image.tmdb.org/t/p/w500';
+const TMDB_BACKDROP = 'https://image.tmdb.org/t/p/original';
+const TMDB_FACE = 'https://image.tmdb.org/t/p/w185';
+
+export const movies: MediaItem[] = [
+  {
+    id: "m1",
+    title: "Oppenheimer",
+    year: "2023",
+    genre: "Drama",
+    rating: "8.3",
+    duration: "3h 0m",
+    quality: "4K",
+    director: "Christopher Nolan",
+    tags: ["Historical", "Drama", "Biographical"],
+    description: "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
+    longDescription: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb. Based on the Pulitzer Prize-winning book 'American Prometheus' by Kai Bird and Martin J. Sherwin, the film is a dramatic thriller about the complex moral and political entanglements of a genius who forever changed the world.",
+    posterUrl: `${TMDB_IMG}/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/fm6KqXpk3M2HVveHwCrBSSBaO0V.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Cillian Murphy", role: "J. Robert Oppenheimer", avatarUrl: `${TMDB_FACE}/dm6V24NjjvjMiCtbMkc8Y2WPm2T.jpg` },
+      { name: "Emily Blunt", role: "Katherine Oppenheimer", avatarUrl: `${TMDB_FACE}/2yABrjKgHMjXHFOU3VWV2o91LWIX.jpg` },
+      { name: "Matt Damon", role: "Leslie Groves", avatarUrl: `${TMDB_FACE}/TifNqjh4jYSz47xGzBB0H3qHCp.jpg` },
+      { name: "Robert Downey Jr.", role: "Lewis Strauss", avatarUrl: `${TMDB_FACE}/im9SAqJPZKEbVZGmjXuLI3quality.jpg` },
+    ]
+  },
+  {
+    id: "m2",
+    title: "Dune: Part Two",
+    year: "2024",
+    genre: "Sci-Fi",
+    rating: "8.5",
+    duration: "2h 47m",
+    quality: "4K",
+    director: "Denis Villeneuve",
+    tags: ["Epic", "Sci-Fi", "Adventure"],
+    description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+    longDescription: "Paul Atreides unites with Chani and the Fremen while on a warpath of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, he must prevent a terrible future only he can foresee.",
+    posterUrl: `${TMDB_IMG}/cdqLnri3NEGcmfnqwk2TSIYtddg.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Timothée Chalamet", role: "Paul Atreides", avatarUrl: `${TMDB_FACE}/BE2sdjpgsa2rNTFa66f7upkaOP.jpg` },
+      { name: "Zendaya", role: "Chani", avatarUrl: `${TMDB_FACE}/6TE2AlOUqVMsIGOtKEMHnKHbxFE.jpg` },
+      { name: "Austin Butler", role: "Feyd-Rautha", avatarUrl: `${TMDB_FACE}/ARhMqA3HTSF5KAflLvqbSqyXzn.jpg` },
+      { name: "Rebecca Ferguson", role: "Lady Jessica", avatarUrl: `${TMDB_FACE}/lJloTOheuQSirSLXNA3JHsrMNfH.jpg` },
+    ]
+  },
+  {
+    id: "m3",
+    title: "The Batman",
+    year: "2022",
+    genre: "Action",
+    rating: "7.8",
+    duration: "2h 56m",
+    quality: "4K",
+    director: "Matt Reeves",
+    tags: ["Superhero", "Crime", "Noir"],
+    description: "Batman ventures into Gotham City's underworld when a sadistic killer leaves behind a trail of cryptic clues.",
+    longDescription: "When a sadistic serial killer begins murdering key political figures in Gotham, Batman is forced to investigate the city's hidden corruption and question his family's involvement. Batman forges new relationships as he unmasks the killer and exposes the depths of corruption.",
+    posterUrl: `${TMDB_IMG}/74xTEgt7R36Fpooo50r9T25onhq.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/b0PlSFdDwbyK0cf5RxwDpaOJQvQ.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Robert Pattinson", role: "Bruce Wayne / Batman", avatarUrl: `${TMDB_FACE}/kU0ZMPU1rHxvWEbz3PNzMfmzxWa.jpg` },
+      { name: "Zoë Kravitz", role: "Selina Kyle", avatarUrl: `${TMDB_FACE}/rGnBUQaRsPEhVXmFIFG7yFdnDM6.jpg` },
+      { name: "Paul Dano", role: "The Riddler", avatarUrl: `${TMDB_FACE}/iFmHsHDjxlDjxAVwubMVjF8YTLP.jpg` },
+      { name: "Colin Farrell", role: "Penguin", avatarUrl: `${TMDB_FACE}/7Ke6niRSR8JeZ3zeHTbVZkfGwwX.jpg` },
+    ]
+  },
+  {
+    id: "m4",
+    title: "Top Gun: Maverick",
+    year: "2022",
+    genre: "Action",
+    rating: "8.3",
+    duration: "2h 10m",
+    quality: "4K",
+    director: "Joseph Kosinski",
+    tags: ["Action", "Drama", "Military"],
+    description: "After thirty years, Maverick is still pushing the envelope as a top naval aviator, but must confront ghosts of his past.",
+    longDescription: "After more than thirty years of service as one of the Navy's top aviators, Pete Mitchell is where he belongs, pushing the envelope as a courageous test pilot and dodging the advancement in rank that would ground him. He must train a detachment of graduates for a special mission unlike any dealt with in generations.",
+    posterUrl: `${TMDB_IMG}/62HCnUTziyWcpDaBO2i1DX17ljH.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/AdqOBPw4PdtzOcfEUmegPBZAxnx.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Tom Cruise", role: "Maverick", avatarUrl: `${TMDB_FACE}/8qBylBsQf4llkGrWR3qAsOtOU8O.jpg` },
+      { name: "Miles Teller", role: "Rooster", avatarUrl: `${TMDB_FACE}/skCgmTtjkBq3LdXWAB2pwqMOGFB.jpg` },
+      { name: "Jennifer Connelly", role: "Penny Benjamin", avatarUrl: `${TMDB_FACE}/2WlHnFRPmQVnCoxVgGHfqUsMwQY.jpg` },
+      { name: "Jon Hamm", role: "Cyclone", avatarUrl: `${TMDB_FACE}/DqoSpSq8d8HEMsaqIoTnDWAHFl7.jpg` },
+    ]
+  },
+  {
+    id: "m5",
+    title: "Interstellar",
+    year: "2014",
+    genre: "Sci-Fi",
+    rating: "8.7",
+    duration: "2h 49m",
+    quality: "4K",
+    director: "Christopher Nolan",
+    tags: ["Space", "Time", "Emotional"],
+    description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    longDescription: "Earth's future has been riddled by disasters, famines, and droughts. There is only one way to ensure mankind's survival: interstellar travel. A newly discovered wormhole in the far reaches of our solar system allows a team of astronauts to go where no man has gone before — a planet that may have the right environment to sustain human life.",
+    posterUrl: `${TMDB_IMG}/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/xJHokMbljvjADYdit5fK5VQsXEG.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Matthew McConaughey", role: "Cooper", avatarUrl: `${TMDB_FACE}/wJiGedOCZhwmx9DizKonJ6Tqfup.jpg` },
+      { name: "Anne Hathaway", role: "Brand", avatarUrl: `${TMDB_FACE}/tLelKoPNiyJCSEtQTz1FGv4TLGc.jpg` },
+      { name: "Jessica Chastain", role: "Murph (adult)", avatarUrl: `${TMDB_FACE}/gFtSd5eKevIkJd5PwDvp4Qe3OFX.jpg` },
+      { name: "Michael Caine", role: "Professor Brand", avatarUrl: `${TMDB_FACE}/wbgRMhR3Zm1FJM5NJVSz7bdKFa0.jpg` },
+    ]
+  },
+  {
+    id: "m6",
+    title: "Inception",
+    year: "2010",
+    genre: "Thriller",
+    rating: "8.8",
+    duration: "2h 28m",
+    quality: "HD",
+    director: "Christopher Nolan",
+    tags: ["Mind-bending", "Action", "Sci-Fi"],
+    description: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
+    longDescription: "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets, is offered a chance to regain his old life as payment for a seemingly impossible task: 'inception', the implantation of another person's idea into a target's subconscious.",
+    posterUrl: `${TMDB_IMG}/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/s3TBrRGB1iav7gFOCNx3H31MoES.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Leonardo DiCaprio", role: "Cobb", avatarUrl: `${TMDB_FACE}/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg` },
+      { name: "Joseph Gordon-Levitt", role: "Arthur", avatarUrl: `${TMDB_FACE}/msugySeTCHVZeRqBSMKBpWk3qMR.jpg` },
+      { name: "Tom Hardy", role: "Eames", avatarUrl: `${TMDB_FACE}/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg` },
+      { name: "Ken Watanabe", role: "Saito", avatarUrl: `${TMDB_FACE}/lxlWTfJD5Hpe9dIfKWOjVu3wwC3.jpg` },
+    ]
+  },
+  {
+    id: "m7",
+    title: "The Dark Knight",
+    year: "2008",
+    genre: "Action",
+    rating: "9.0",
+    duration: "2h 32m",
+    quality: "HD",
+    director: "Christopher Nolan",
+    tags: ["Superhero", "Crime", "Thriller"],
+    description: "Batman raises the stakes in his war on crime with the help of Lt. Jim Gordon and District Attorney Harvey Dent.",
+    longDescription: "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens as the Joker.",
+    posterUrl: `${TMDB_IMG}/qJ2tW6WMUDux911r6m7haRef0WH.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/nMKdUFyrkinsqBIyd8Fsx9yzzOg.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Christian Bale", role: "Bruce Wayne / Batman", avatarUrl: `${TMDB_FACE}/qCpZn2e3dimwbryLnqxZuI88PTi.jpg` },
+      { name: "Heath Ledger", role: "The Joker", avatarUrl: `${TMDB_FACE}/5oBGTbTzfh5iyatpVuTVN4cXWZt.jpg` },
+      { name: "Aaron Eckhart", role: "Harvey Dent", avatarUrl: `${TMDB_FACE}/6aWxcQv5E1XE1wODJzlzdHpHiMk.jpg` },
+      { name: "Maggie Gyllenhaal", role: "Rachel Dawes", avatarUrl: `${TMDB_FACE}/5LvxQHxUQlbBJKJp8GrxqnFQqx8.jpg` },
+    ]
+  },
+  {
+    id: "m8",
+    title: "Parasite",
+    year: "2019",
+    genre: "Thriller",
+    rating: "8.5",
+    duration: "2h 12m",
+    quality: "HD",
+    director: "Bong Joon-ho",
+    tags: ["Social Commentary", "Dark Comedy", "Mystery"],
+    description: "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Parks and the destitute Kims.",
+    longDescription: "All unemployed, Ki-taek's family takes a keen interest in the wealthy and naive Park family. Following the son Ki-woo's entry into their home as an English tutor, the Kims masterfully scheme to infiltrate the household and all get hired for different jobs. But all is not what it seems.",
+    posterUrl: `${TMDB_IMG}/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/TU9NIjwzjoKPwQHoHshkFcQUCG.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Song Kang-ho", role: "Ki-taek", avatarUrl: `${TMDB_FACE}/1SfDCJHY0o3JaWxomWBvxJYLDmv.jpg` },
+      { name: "Lee Sun-kyun", role: "Mr. Park", avatarUrl: `${TMDB_FACE}/tgCiZBqGXbdGUCDoovnzT3vwRy2.jpg` },
+      { name: "Cho Yeo-jeong", role: "Choi Yeon-gyo", avatarUrl: `${TMDB_FACE}/oAzMfh2LDWA15OaS0gqsRx7Fcmd.jpg` },
+      { name: "Park So-dam", role: "Ki-jung", avatarUrl: `${TMDB_FACE}/z2fFUjFGD7GX0OPXGI8jmGnT7vz.jpg` },
+    ]
+  },
+  {
+    id: "m9",
+    title: "Everything Everywhere",
+    year: "2022",
+    genre: "Comedy",
+    rating: "7.8",
+    duration: "2h 19m",
+    quality: "HD",
+    director: "Daniel Kwan, Daniel Scheinert",
+    tags: ["Multiverse", "Action", "Comedy"],
+    description: "A middle-aged Chinese immigrant is swept up in an insane adventure where she must connect with parallel universe versions of herself.",
+    longDescription: "An aging Chinese immigrant is swept up in an insane adventure in which she alone can save existence by exploring other universes and connecting with the lives she could have led.",
+    posterUrl: `${TMDB_IMG}/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/fHkqNSoO5cWHDkWGfUMjIJM73yX.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Michelle Yeoh", role: "Evelyn Wang", avatarUrl: `${TMDB_FACE}/7LOqfoG9Shf6AFlPxg9kDdHKxRS.jpg` },
+      { name: "Ke Huy Quan", role: "Waymond Wang", avatarUrl: `${TMDB_FACE}/zoteNqoKSq7W6sGhUrGVe1cLWXN.jpg` },
+      { name: "Jamie Lee Curtis", role: "Deirdre Beaubeirdre", avatarUrl: `${TMDB_FACE}/i0G5QTVP8BBpJg6FLQP3vy95gmI.jpg` },
+      { name: "Stephanie Hsu", role: "Joy Wang", avatarUrl: `${TMDB_FACE}/5zSHEJbJVSnfEKjGnelcPK0gB1.jpg` },
+    ]
+  },
+  {
+    id: "m10",
+    title: "Avatar: Way of Water",
+    year: "2022",
+    genre: "Sci-Fi",
+    rating: "7.6",
+    duration: "3h 12m",
+    quality: "4K",
+    director: "James Cameron",
+    tags: ["Epic", "Fantasy", "Visual Effects"],
+    description: "Jake Sully lives with his newfound family on Pandora and faces new threats to their world.",
+    longDescription: "Jake Sully lives with his newfound family formed on the planet of Pandora. Once a familiar threat returns to finish what was previously started, Jake must work with Neytiri and the army of the Na'vi race to protect their planet.",
+    posterUrl: `${TMDB_IMG}/t6HIqrRAclMCA60NsSbj3UjEHYX.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/evaFLqtswezLosMLAbCMyQxqnTG.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Sam Worthington", role: "Jake Sully", avatarUrl: `${TMDB_FACE}/7feE2QE9Dn9e27E8HyInX9eLG5x.jpg` },
+      { name: "Zoe Saldana", role: "Neytiri", avatarUrl: `${TMDB_FACE}/iOVSHlWlkOeZAWP4nRUEwvDsOs8.jpg` },
+      { name: "Sigourney Weaver", role: "Kiri", avatarUrl: `${TMDB_FACE}/y8Xo9DlDzChCfL7Vl5kpDCGhWBa.jpg` },
+      { name: "Stephen Lang", role: "Col. Quaritch", avatarUrl: `${TMDB_FACE}/tnFam6KKMIzFMPxoJosvHN0j7oQ.jpg` },
+    ]
+  },
+  {
+    id: "m11",
+    title: "Spider-Man: No Way Home",
+    year: "2021",
+    genre: "Action",
+    rating: "8.2",
+    duration: "2h 28m",
+    quality: "4K",
+    director: "Jon Watts",
+    tags: ["Marvel", "Superhero", "Multiverse"],
+    description: "With Spider-Man's identity revealed, Peter asks Doctor Strange for help — but a spell goes dangerously wrong.",
+    longDescription: "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear, forcing Peter to discover what it truly means to be Spider-Man.",
+    posterUrl: `${TMDB_IMG}/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/14QbnygCuTO0vl7CAFmPf1fgZfV.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Tom Holland", role: "Peter Parker", avatarUrl: `${TMDB_FACE}/2yJEriOjWr0AvXCgvQfWJuCwfHj.jpg` },
+      { name: "Zendaya", role: "MJ", avatarUrl: `${TMDB_FACE}/6TE2AlOUqVMsIGOtKEMHnKHbxFE.jpg` },
+      { name: "Benedict Cumberbatch", role: "Doctor Strange", avatarUrl: `${TMDB_FACE}/2yJEriOjWr0AvXCgvQfWJuCwfHj.jpg` },
+      { name: "Alfred Molina", role: "Doctor Octopus", avatarUrl: `${TMDB_FACE}/iFmHsHDjxlDjxAVwubMVjF8YTLP.jpg` },
+    ]
+  },
+  {
+    id: "m12",
+    title: "The Godfather",
+    year: "1972",
+    genre: "Drama",
+    rating: "9.2",
+    duration: "2h 55m",
+    quality: "HD",
+    director: "Francis Ford Coppola",
+    tags: ["Classic", "Crime", "Mafia"],
+    description: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+    longDescription: "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When patriarch Vito Corleone barely survives an attempt on his life, his youngest son, Michael, steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
+    posterUrl: `${TMDB_IMG}/3bhkrj58Vtu7enYsRolD1fZdja1.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/tSPT36ZKlP2WVHJLM4cQPLSzv3b.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Marlon Brando", role: "Vito Corleone", avatarUrl: `${TMDB_FACE}/fuTEPMDM5GE7guYFxfDpUE3NZRK.jpg` },
+      { name: "Al Pacino", role: "Michael Corleone", avatarUrl: `${TMDB_FACE}/2JIxPsZfKGjFuJQRVEHBxjWZFuU.jpg` },
+      { name: "James Caan", role: "Sonny Corleone", avatarUrl: `${TMDB_FACE}/pCkWavbmLfn2eEfZ5dvNYHNFBoT.jpg` },
+      { name: "Diane Keaton", role: "Kay Adams", avatarUrl: `${TMDB_FACE}/5i7czRCUkDlrhFDTefxXuDC9uoE.jpg` },
+    ]
+  },
+  {
+    id: "h1",
+    title: "RRR",
+    year: "2022",
+    genre: "Action",
+    rating: "7.8",
+    duration: "3h 7m",
+    quality: "4K",
+    director: "S. S. Rajamouli",
+    tags: ["Hindi", "Indian", "Bollywood", "Epic", "Period"],
+    description: "A tale of two legendary Indian freedom fighters who rose against the British Empire in 1920s colonial India.",
+    longDescription: "A fictional story about two legendary Indian revolutionaries and their journey away from home before they began fighting for their country in the 1920s. Alluri Sitarama Raju and Komaram Bheem join forces in a spectacular action epic.",
+    posterUrl: `${TMDB_IMG}/rGFYlY3fs8PDycfpw3OD2jfE2Fr.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/uhnch4bM6COjNPIc7ECHyfa9wbX.jpg`,
+    type: "movie",
+    cast: [
+      { name: "N. T. Rama Rao Jr.", role: "Komaram Bheem", avatarUrl: `${TMDB_FACE}/qNgfbJpT9cWfuNbMnAMFJlOZPxZ.jpg` },
+      { name: "Ram Charan", role: "Alluri Sitarama Raju", avatarUrl: `${TMDB_FACE}/kmGCRBXpkVqUKNdCvGGOQlFchK.jpg` },
+    ]
+  },
+  {
+    id: "h2",
+    title: "Dangal",
+    year: "2016",
+    genre: "Drama",
+    rating: "8.3",
+    duration: "2h 41m",
+    quality: "HD",
+    director: "Nitesh Tiwari",
+    tags: ["Hindi", "Indian", "Bollywood", "Sports", "Biographical"],
+    description: "Former wrestler Mahavir Singh Phogat trains his daughters Geeta and Babita to become world-class wrestlers.",
+    longDescription: "Based on the true story of Mahavir Singh Phogat, a former amateur wrestler who trains his daughters Geeta Phogat and Babita Kumari to become world-class wrestlers. Against all societal norms, he fights for their right to compete.",
+    posterUrl: `${TMDB_IMG}/iUgygt3fscRoKWCV1d0C7FbM9TP.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/x9td0NQha0t44K2qgcMipLOGjVi.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Aamir Khan", role: "Mahavir Singh Phogat", avatarUrl: `${TMDB_FACE}/iDkTO11mBcSCWKPiqFRBu80Rjz0.jpg` },
+      { name: "Fatima Sana Shaikh", role: "Geeta Phogat", avatarUrl: `${TMDB_FACE}/3mEhXPqJd1bMM2Lv4J8fJVBFbAW.jpg` },
+    ]
+  },
+  {
+    id: "h3",
+    title: "3 Idiots",
+    year: "2009",
+    genre: "Comedy",
+    rating: "8.4",
+    duration: "2h 50m",
+    quality: "HD",
+    director: "Rajkumar Hirani",
+    tags: ["Hindi", "Indian", "Bollywood", "Comedy", "Drama"],
+    description: "Two friends search for their lost companion while recounting his college days and the unconventional lessons they learnt.",
+    longDescription: "Two friends embark on a quest for a lost buddy. On this journey, they encounter a long forgotten bet, a wedding they must crash, and a funeral that goes askew, all intercut with college flashbacks.",
+    posterUrl: `${TMDB_IMG}/66A9MqXOyVFCssoloscw79z8Tew.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/8gT3UKtglLVpu0YfccwbmXZ5Eis.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Aamir Khan", role: "Rancho", avatarUrl: `${TMDB_FACE}/iDkTO11mBcSCWKPiqFRBu80Rjz0.jpg` },
+      { name: "R. Madhavan", role: "Farhan Qureshi", avatarUrl: `${TMDB_FACE}/8UF91B2T6hDlrF5lNkKvdBjZAbG.jpg` },
+      { name: "Sharman Joshi", role: "Raju Rastogi", avatarUrl: `${TMDB_FACE}/nHJNFvl4PN7iNnw7k4osBkXQrIz.jpg` },
+    ]
+  },
+  {
+    id: "h4",
+    title: "Kabir Singh",
+    year: "2019",
+    genre: "Drama",
+    rating: "7.1",
+    duration: "2h 53m",
+    quality: "HD",
+    director: "Sandeep Reddy Vanga",
+    tags: ["Hindi", "Indian", "Bollywood", "Romance"],
+    description: "A short-tempered surgeon goes on a self-destructive path after his ex-lover gets married to someone else.",
+    longDescription: "Kabir Singh, a brilliant but rebellious medical student, falls deeply in love with Preeti. When their relationship is torn apart by family pressure, he spirals into self-destruction. A remake of the Telugu film Arjun Reddy.",
+    posterUrl: `${TMDB_IMG}/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Shahid Kapoor", role: "Kabir Singh", avatarUrl: `${TMDB_FACE}/jl5DRQMKX9dBVxGwYm3T5YU3dAS.jpg` },
+      { name: "Kiara Advani", role: "Preeti Sikka", avatarUrl: `${TMDB_FACE}/dsWNdOhNMAlsQqYjSPnAi0qYjv2.jpg` },
+    ]
+  },
+  {
+    id: "h5",
+    title: "PK",
+    year: "2014",
+    genre: "Comedy",
+    rating: "8.1",
+    duration: "2h 33m",
+    quality: "HD",
+    director: "Rajkumar Hirani",
+    tags: ["Hindi", "Indian", "Bollywood", "Comedy", "Satire"],
+    description: "An alien on Earth loses his only means of returning home and seeks help from a journalist.",
+    longDescription: "A stranger in the city asks questions that no one has ever asked before, challenging beliefs that people have accepted for generations. PK is a commentary on organized religion and blind faith.",
+    posterUrl: `${TMDB_IMG}/oppZcEK81631oRcZO1UXwCfEboj.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/oppZcEK81631oRcZO1UXwCfEboj.jpg`,
+    type: "movie",
+    cast: [
+      { name: "Aamir Khan", role: "PK", avatarUrl: `${TMDB_FACE}/iDkTO11mBcSCWKPiqFRBu80Rjz0.jpg` },
+      { name: "Anushka Sharma", role: "Jaggu", avatarUrl: `${TMDB_FACE}/akXkMuFyG3b9VZHUDJi3JqU3JeD.jpg` },
+    ]
+  }
+];
+
+export const tvSeries: MediaItem[] = [
+  {
+    id: "hs1",
+    title: "Sacred Games",
+    year: "2018",
+    genre: "Thriller",
+    rating: "8.5",
+    seasons: 2,
+    quality: "HD",
+    director: "Anurag Kashyap, Vikramaditya Motwane",
+    tags: ["Hindi", "Indian", "Crime", "Dark"],
+    description: "A Mumbai police officer receives a tip that gives him 25 days to save the city from a ruthless criminal mastermind.",
+    longDescription: "Sartaj Singh, a Mumbai police officer, receives a tip from a gangster Ganesh Gaitonde. He must now use this to save Mumbai from an unknown disaster within 25 days. An adaptation of Vikram Chandra's acclaimed novel.",
+    posterUrl: `${TMDB_IMG}/jPrvrBeTliHw6YPwlaonbCcuV1y.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/jPrvrBeTliHw6YPwlaonbCcuV1y.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Saif Ali Khan", role: "Sartaj Singh", avatarUrl: `${TMDB_FACE}/jBwNPaeFrVcU3Jj2XHIF51SWeSe.jpg` },
+      { name: "Nawazuddin Siddiqui", role: "Ganesh Gaitonde", avatarUrl: `${TMDB_FACE}/7l8MH7fCKMJRjLqMHjXeEOHXWAE.jpg` },
+    ]
+  },
+  {
+    id: "hs2",
+    title: "Mirzapur",
+    year: "2018",
+    genre: "Thriller",
+    rating: "8.4",
+    seasons: 3,
+    quality: "HD",
+    director: "Karan Anshuman, Gurmmeet Singh",
+    tags: ["Hindi", "Indian", "Crime", "Dark"],
+    description: "A crime saga about the lawless land of Mirzapur and the brutal power struggle of its underworld.",
+    longDescription: "Set in the heartland of India, Mirzapur is a gritty crime drama about the lawless city of Mirzapur, UP. Kaleen Bhaiya, the local don, controls the carpet export business as a front for his drug and weapons empire.",
+    posterUrl: `${TMDB_IMG}/bOGkgRGdhrBYJSLpXaxhXVstddV.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/bOGkgRGdhrBYJSLpXaxhXVstddV.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Pankaj Tripathi", role: "Kaleen Bhaiya", avatarUrl: `${TMDB_FACE}/A2GqhDvMwpTzJVDOFBpqJIuKWpZ.jpg` },
+      { name: "Ali Fazal", role: "Guddu Pandit", avatarUrl: `${TMDB_FACE}/l1pJRR2EAf5WKxRisTU9VGBVEaY.jpg` },
+    ]
+  },
+  {
+    id: "hs3",
+    title: "Scam 1992",
+    year: "2020",
+    genre: "Drama",
+    rating: "9.3",
+    seasons: 1,
+    quality: "HD",
+    director: "Hansal Mehta",
+    tags: ["Hindi", "Indian", "Biographical", "Finance"],
+    description: "The rise and fall of Harshad Mehta, a stockbroker who took the Indian stock market to dizzying heights in the 1990s.",
+    longDescription: "Harshad Mehta, a stockbroker from humble origins, climbs the financial ladder with cunning and charisma until his fraudulent scheme unravels. Based on journalist Sucheta Dalal's investigative reporting.",
+    posterUrl: `${TMDB_IMG}/fiimZ9Xt5cPTPHNrbS4QautBXpU.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/fiimZ9Xt5cPTPHNrbS4QautBXpU.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Pratik Gandhi", role: "Harshad Mehta", avatarUrl: `${TMDB_FACE}/2E0KMFr6FVVq9ZyBsL8SB6sHVPc.jpg` },
+      { name: "Shreya Dhanwanthary", role: "Sucheta Dalal", avatarUrl: `${TMDB_FACE}/oIJA15Cxqj7JFO3SaKKbwZWNZVb.jpg` },
+    ]
+  },
+  {
+    id: "hs4",
+    title: "Delhi Crime",
+    year: "2019",
+    genre: "Drama",
+    rating: "8.5",
+    seasons: 2,
+    quality: "HD",
+    director: "Richie Mehta",
+    tags: ["Hindi", "Indian", "Crime", "Social"],
+    description: "Based on the 2012 Delhi gang rape case, following the Delhi police investigation that led to the arrests.",
+    longDescription: "Delhi Crime is an Emmy Award-winning series that dramatises the real-life investigation following the 2012 Delhi gang rape. DCP Vartika Chaturvedi leads her team under tremendous pressure to bring the perpetrators to justice.",
+    posterUrl: `${TMDB_IMG}/p8h3VmDHABes6JKHahv5eg3I6MH.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/p8h3VmDHABes6JKHahv5eg3I6MH.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Shefali Shah", role: "DCP Vartika Chaturvedi", avatarUrl: `${TMDB_FACE}/AaXFCVH9iy1XZZE5pXM0MKpFCzh.jpg` },
+      { name: "Rasika Dugal", role: "Neeti Singh", avatarUrl: `${TMDB_FACE}/yKDGFvmO8FhPa7MXlRzAfKZ0AiP.jpg` },
+    ]
+  },
+  {
+    id: "hs5",
+    title: "Panchayat",
+    year: "2020",
+    genre: "Comedy",
+    rating: "8.9",
+    seasons: 3,
+    quality: "HD",
+    director: "Deepak Kumar Mishra",
+    tags: ["Hindi", "Indian", "Comedy", "Slice of Life"],
+    description: "An engineering graduate reluctantly takes up a government job as secretary of a panchayat office in rural India.",
+    longDescription: "Abhishek Tripathi, a city-bred engineering graduate, takes up the role of panchayat secretary in a small village, Phulera, in Uttar Pradesh. The show captures his journey of adjusting to rural life while solving everyday local problems.",
+    posterUrl: `${TMDB_IMG}/ovQaYzqGIgdSPUePMjXHZzsifnN.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/ovQaYzqGIgdSPUePMjXHZzsifnN.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Jitendra Kumar", role: "Abhishek Tripathi", avatarUrl: `${TMDB_FACE}/8FYyWoZrKvFJpO6q9F6ULTEjALc.jpg` },
+      { name: "Raghubir Yadav", role: "Brij Bhushan Dubey", avatarUrl: `${TMDB_FACE}/4vOTLFUEQMQlKCFBa9SJkNIE0dN.jpg` },
+    ]
+  },
+  {
+    id: "t1",
+    title: "Stranger Things",
+    year: "2016",
+    genre: "Sci-Fi",
+    rating: "8.7",
+    seasons: 4,
+    director: "The Duffer Brothers",
+    tags: ["Supernatural", "Coming of Age", "80s"],
+    description: "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces.",
+    longDescription: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl. A love letter to the horror films of the 80s, Stranger Things is an unforgettable journey into the dark side of childhood.",
+    posterUrl: `${TMDB_IMG}/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/56v2KjBlU4XaOv9rVYEQypROD7P.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Millie Bobby Brown", role: "Eleven", avatarUrl: `${TMDB_FACE}/4GJKoaNpvyDaNXDoFBbBtyMlVDi.jpg` },
+      { name: "Finn Wolfhard", role: "Mike Wheeler", avatarUrl: `${TMDB_FACE}/2Ls7MUWrSjE5NOYQpCGBH7AjW78.jpg` },
+      { name: "Winona Ryder", role: "Joyce Byers", avatarUrl: `${TMDB_FACE}/ld9x40TakYVRB0DnBdPyHHnLpOG.jpg` },
+      { name: "David Harbour", role: "Jim Hopper", avatarUrl: `${TMDB_FACE}/wGMFZlvMxXEjfvsMRiNLnZRFnKZ.jpg` },
+    ]
+  },
+  {
+    id: "t2",
+    title: "The Last of Us",
+    year: "2023",
+    genre: "Drama",
+    rating: "8.8",
+    seasons: 2,
+    director: "Craig Mazin, Neil Druckmann",
+    tags: ["Post-Apocalyptic", "Survival", "Emotional"],
+    description: "After a global catastrophe, a hardened survivor takes charge of a 14-year-old girl who may be humanity's last hope.",
+    longDescription: "After a global catastrophe, a hardened survivor takes charge of a 14-year-old girl who may be humanity's last hope. Set twenty years into a pandemic caused by a mass fungal infection, Joel and Ellie must traverse the remains of America.",
+    posterUrl: `${TMDB_IMG}/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/9l1eZiJHmhr5jIlthMdJN5WYoff.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Pedro Pascal", role: "Joel Miller", avatarUrl: `${TMDB_FACE}/pUmBNbTuXlMvmMnPzXWtaLGklzD.jpg` },
+      { name: "Bella Ramsey", role: "Ellie Williams", avatarUrl: `${TMDB_FACE}/hbdlkrpQEV7OE2bCVNJvdS3FXJB.jpg` },
+      { name: "Anna Torv", role: "Tess", avatarUrl: `${TMDB_FACE}/znEQJHaWmhYT8bOaUGy3HBoBJWO.jpg` },
+      { name: "Gabriel Luna", role: "Tommy Miller", avatarUrl: `${TMDB_FACE}/4sMliC5oK4XVZAD6HJN7qrUb8Yp.jpg` },
+    ]
+  },
+  {
+    id: "t3",
+    title: "House of the Dragon",
+    year: "2022",
+    genre: "Drama",
+    rating: "8.4",
+    seasons: 2,
+    director: "Ryan Condal, Miguel Sapochnik",
+    tags: ["Fantasy", "Medieval", "Political"],
+    description: "The story of House Targaryen set 200 years before Game of Thrones.",
+    longDescription: "The prequel to Game of Thrones follows the House Targaryen civil war, known as 'The Dance of the Dragons', which begins with a succession crisis following the death of King Viserys I Targaryen.",
+    posterUrl: `${TMDB_IMG}/z2yahl2uefxDCl0nogcRBstwruJ.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/etj8E2o0Bud0HkONVQPjyCkIvpv.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Matt Smith", role: "Daemon Targaryen", avatarUrl: `${TMDB_FACE}/xSmABOVfVjXloBRBcz2bFiEEbzI.jpg` },
+      { name: "Emma D'Arcy", role: "Rhaenyra Targaryen", avatarUrl: `${TMDB_FACE}/kfFCmcKLiLlXg2BPYE7fFhvpGzn.jpg` },
+      { name: "Olivia Cooke", role: "Alicent Hightower", avatarUrl: `${TMDB_FACE}/fRKdpbmUwT0VFq1G0Ox0vTBqSGE.jpg` },
+      { name: "Paddy Considine", role: "King Viserys I", avatarUrl: `${TMDB_FACE}/jQLDyiuXc5RG58Ml5bpXCzW9TsF.jpg` },
+    ]
+  },
+  {
+    id: "t4",
+    title: "Squid Game",
+    year: "2021",
+    genre: "Thriller",
+    rating: "8.0",
+    seasons: 2,
+    director: "Hwang Dong-hyuk",
+    tags: ["Korean", "Survival", "Dark"],
+    description: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games for a tempting prize.",
+    longDescription: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits — with deadly high stakes. A soaring, Netflix global phenomenon.",
+    posterUrl: `${TMDB_IMG}/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/qw3J9cNeLioOLoR68WX7z79aCdK.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Lee Jung-jae", role: "Seong Gi-hun", avatarUrl: `${TMDB_FACE}/nnE5PFPBRqAYbSwGSLQ8dz9yxIV.jpg` },
+      { name: "Park Hae-soo", role: "Cho Sang-woo", avatarUrl: `${TMDB_FACE}/mGMoq2A5yzYJL0JmLsTBtFUFXBm.jpg` },
+      { name: "Jung Ho-yeon", role: "Kang Sae-byeok", avatarUrl: `${TMDB_FACE}/wPBi2aYECWGSZWlGWdSNPMJlxep.jpg` },
+      { name: "O Yeong-su", role: "Player 001", avatarUrl: `${TMDB_FACE}/oioI5GEqHNYBLhKrNvLcCl9hYY2.jpg` },
+    ]
+  },
+  {
+    id: "t5",
+    title: "The Crown",
+    year: "2016",
+    genre: "Drama",
+    rating: "8.6",
+    seasons: 6,
+    director: "Peter Morgan",
+    tags: ["Royal Family", "British", "Historical"],
+    description: "Follows the political rivalries and romance of Queen Elizabeth II's reign.",
+    longDescription: "Follows the political rivalries and romance of Queen Elizabeth II's reign and the events that shaped the second half of the 20th century. An epic saga spanning the full reign of the longest-serving monarch in British history.",
+    posterUrl: `${TMDB_IMG}/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/gcFdGjFikFGZMqjEPFHMYGSHATM.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Olivia Colman", role: "Queen Elizabeth II", avatarUrl: `${TMDB_FACE}/rSHC7JPWQzjL21TZ0PtHs7HrFHE.jpg` },
+      { name: "Tobias Menzies", role: "Prince Philip", avatarUrl: `${TMDB_FACE}/lxlWTfJD5Hpe9dIfKWOjVu3wwC3.jpg` },
+      { name: "Helena Bonham Carter", role: "Princess Margaret", avatarUrl: `${TMDB_FACE}/dzDrPLHmUg7E9BXAQV25nJKVSQ2.jpg` },
+      { name: "Josh O'Connor", role: "Prince Charles", avatarUrl: `${TMDB_FACE}/6bFkuBsyolMHCenFbBWcGkOPZTj.jpg` },
+    ]
+  },
+  {
+    id: "t6",
+    title: "Succession",
+    year: "2018",
+    genre: "Drama",
+    rating: "8.9",
+    seasons: 4,
+    director: "Jesse Armstrong",
+    tags: ["Power", "Family", "Satire"],
+    description: "The Roy family controls the biggest media and entertainment company in the world.",
+    longDescription: "The Roy family is known for controlling the biggest media and entertainment company in the world. However, their world changes when their father Logan Roy announces his retirement from the company he has run for decades.",
+    posterUrl: `${TMDB_IMG}/e2X8vXEa8bkORYzKj57CJFqisCn.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/8HR8gMIORezaIZhSNGnfMi4COYG.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Brian Cox", role: "Logan Roy", avatarUrl: `${TMDB_FACE}/bmqBaT4MtfTPiLJ26qPPdZ6RCQF.jpg` },
+      { name: "Jeremy Strong", role: "Kendall Roy", avatarUrl: `${TMDB_FACE}/iyH3HZAJiIMbwmWrfmOXRkVB7bL.jpg` },
+      { name: "Sarah Snook", role: "Siobhan Roy", avatarUrl: `${TMDB_FACE}/vxPBepZ7aTZ7dvCOQPTHoFsMSKz.jpg` },
+      { name: "Matthew Macfadyen", role: "Tom Wambsgans", avatarUrl: `${TMDB_FACE}/o0JcCkW2rOC6m9EiHaVFJFQdBfut.jpg` },
+    ]
+  },
+  {
+    id: "t7",
+    title: "The Mandalorian",
+    year: "2019",
+    genre: "Sci-Fi",
+    rating: "8.7",
+    seasons: 3,
+    director: "Jon Favreau",
+    tags: ["Star Wars", "Space Western", "Adventure"],
+    description: "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
+    longDescription: "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic. Featuring the iconic Grogu (Baby Yoda), this Star Wars series became a global phenomenon.",
+    posterUrl: `${TMDB_IMG}/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/9ijMGlJKqcslFCtAqmDj7MQcE2r.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Pedro Pascal", role: "Din Djarin / Mando", avatarUrl: `${TMDB_FACE}/pUmBNbTuXlMvmMnPzXWtaLGklzD.jpg` },
+      { name: "Carl Weathers", role: "Greef Karga", avatarUrl: `${TMDB_FACE}/u1Lf5wq9LXKjFjZXobDHWIbRiCZ.jpg` },
+      { name: "Gina Carano", role: "Cara Dune", avatarUrl: `${TMDB_FACE}/h9mS8LpLaRMBEfONyR0vwq3PZCY.jpg` },
+      { name: "Giancarlo Esposito", role: "Moff Gideon", avatarUrl: `${TMDB_FACE}/9uNl3DsoK0kSDqsZdFSNJkFuuZ0.jpg` },
+    ]
+  },
+  {
+    id: "t8",
+    title: "Wednesday",
+    year: "2022",
+    genre: "Comedy",
+    rating: "8.1",
+    seasons: 2,
+    director: "Tim Burton, Miles Millar",
+    tags: ["Dark Comedy", "Supernatural", "Teen"],
+    description: "Wednesday Addams navigates life as a student at Nevermore Academy while solving a monstrous mystery.",
+    longDescription: "Follows Wednesday Addams' years as a student at Nevermore Academy, where she attempts to master her emerging psychic ability, thwart a monstrous killing spree that has terrorised the local town, and solve the supernatural mystery that embroiled her parents 25 years ago.",
+    posterUrl: `${TMDB_IMG}/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/iHSwvRVsRyxpX7FE7GbviaDvgGZ.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Jenna Ortega", role: "Wednesday Addams", avatarUrl: `${TMDB_FACE}/qPmIBWFzl4pzRxm6DXKxZhVMNL1.jpg` },
+      { name: "Emma Myers", role: "Enid Sinclair", avatarUrl: `${TMDB_FACE}/sHGIAFAGBzr9RJbkAGHEa4i2P85.jpg` },
+      { name: "Catherine Zeta-Jones", role: "Morticia Addams", avatarUrl: `${TMDB_FACE}/AJFJ4FHPK5ztGXJYhFVjDTsrKMC.jpg` },
+      { name: "Luis Guzmán", role: "Gomez Addams", avatarUrl: `${TMDB_FACE}/bkblg3a4L2PexkfCVH12ZW2qMaL.jpg` },
+    ]
+  },
+  {
+    id: "t9",
+    title: "Andor",
+    year: "2022",
+    genre: "Sci-Fi",
+    rating: "8.4",
+    seasons: 2,
+    director: "Tony Gilroy",
+    tags: ["Star Wars", "Spy Thriller", "Rebellion"],
+    description: "The Andor series follows Cassian Andor's journey to becoming a Rebel hero.",
+    longDescription: "In an era filled with danger, deception and intrigue, Cassian Andor will discover the difference he can make in the struggle against the tyrannical Galactic Empire. The series explores tales filled with espionage and daring missions to restore hope to a galaxy in the grip of a ruthless Empire.",
+    posterUrl: `${TMDB_IMG}/59SVNwLfoMnZPPB6ukW6dlPxAdI.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Diego Luna", role: "Cassian Andor", avatarUrl: `${TMDB_FACE}/hS26yxhCvMmqKaXcWKMVkGNEFQd.jpg` },
+      { name: "Genevieve O'Reilly", role: "Mon Mothma", avatarUrl: `${TMDB_FACE}/bSGhkLONz2CL8GnIcFHdXBa6XR4.jpg` },
+      { name: "Stellan Skarsgård", role: "Luthen Rael", avatarUrl: `${TMDB_FACE}/uJh7MjBShTEoVdLnGFyMXQlE5u8.jpg` },
+      { name: "Forest Whitaker", role: "Saw Gerrera", avatarUrl: `${TMDB_FACE}/4OXUFkgEbKCiZVAqJpiCOcidaD.jpg` },
+    ]
+  },
+  {
+    id: "t10",
+    title: "Severance",
+    year: "2022",
+    genre: "Thriller",
+    rating: "8.7",
+    seasons: 2,
+    director: "Ben Stiller",
+    tags: ["Workplace", "Dystopian", "Mystery"],
+    description: "Office workers whose memories have been surgically divided between their work and personal lives.",
+    longDescription: "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
+    posterUrl: `${TMDB_IMG}/pPHpeI2X1qEd1CS1SeyrdhZ4qnT.jpg`,
+    backdropUrl: `${TMDB_BACKDROP}/ixgFmf1X59PUZam2qbAfskx2gQr.jpg`,
+    type: "tv",
+    cast: [
+      { name: "Adam Scott", role: "Mark Scout", avatarUrl: `${TMDB_FACE}/4hB4LmHRNGxfxL0W7RqOtV4EQPH.jpg` },
+      { name: "Patricia Arquette", role: "Harmony Cobel", avatarUrl: `${TMDB_FACE}/xHXGF4CNXD5sChHyWkOeHmJbmNk.jpg` },
+      { name: "John Turturro", role: "Irving Bailiff", avatarUrl: `${TMDB_FACE}/z7CpEyOJHXtRl0NnxCuISPhonQn.jpg` },
+      { name: "Britt Lower", role: "Helly R.", avatarUrl: `${TMDB_FACE}/gnLSEE7EM6hFwOXMLNFocF2CFKY.jpg` },
+    ]
+  }
+];
+
+export const allContent = [...movies, ...tvSeries];
+
+export const genres = ["All", "Action", "Drama", "Thriller", "Sci-Fi", "Comedy", "Documentary"];
+
+export const continueWatching = [
+  { item: movies[0], progress: 62 },
+  { item: tvSeries[1], progress: 38 },
+  { item: movies[3], progress: 85 },
+  { item: tvSeries[5], progress: 21 },
+  { item: movies[6], progress: 54 },
+];

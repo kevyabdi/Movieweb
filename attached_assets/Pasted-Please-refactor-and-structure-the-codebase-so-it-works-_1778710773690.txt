@@ -1,0 +1,70 @@
+Please refactor and structure the codebase so it works smoothly and reliably on Vercel without API deployment issues, server crashes, routing problems, or environment variable conflicts.
+
+Requirements:
+
+* Make the API fully compatible with Vercel serverless functions
+* Ensure Supabase connection works correctly in production
+* Optimize the project for Vercel deployment and scaling
+* Remove or replace anything that may break on Vercel (unsupported modules, filesystem dependencies, long-running processes, etc.)
+* Configure environment variables properly for both local development and production
+* Make frontend and backend communication stable with correct CORS setup
+* Ensure admin panel login and API requests work correctly after deployment
+* Add proper production-ready folder structure and configuration
+* Make builds clean and stable with no deployment errors
+* Ensure all routes work correctly on refresh and direct URL access
+* Add proper error handling and fallback responses
+* Configure the project so redeployments on Vercel work without manual fixes
+
+The goal is to have a clean, production-ready setup specifically designed for Vercel + Supabase, with minimal deployment issues and easy maintenance.
+
+# README.md Request
+
+Create a professional and clean README.md file for my full-stack streaming platform project.
+
+The project uses:
+
+- Frontend: React + Vite
+- Backend: Express.js
+- Database/Auth/Storage: Supabase
+- Hosting: Vercel
+- ORM: Drizzle ORM
+- PostgreSQL Database
+
+I want the README.md to be modern, beginner-friendly, and production-ready.
+
+Include these sections:
+
+- Project overview
+- Features
+- Tech stack
+- Folder structure
+- Installation steps
+- Environment variables setup
+- Supabase setup
+- Vercel deployment guide
+- Local development instructions
+- Build & production commands
+- API setup
+- Troubleshooting section
+- Deployment notes
+- Future improvements
+- License
+
+Important requirements:
+
+- Make the README easy to understand
+- Use proper Markdown formatting
+- Add badges and clean section styling
+- Include example .env configuration
+- Explain how to deploy frontend and API on Vercel correctly
+- Explain common Vercel deployment issues and fixes
+- Ensure the setup is optimized specifically for Vercel + Supabase
+- Make it look professional for GitHub visitors
+
+Also generate:
+- A clean project structure tree
+- Copy-paste deployment commands
+- Example environment variables
+- Production deployment recommendations
+
+The final README should look polished and ready for public GitHub use.

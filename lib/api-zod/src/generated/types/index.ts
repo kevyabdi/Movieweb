@@ -6,4 +6,23 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./category";
+export * from "./categoryInput";
+export * from "./categoryUpdate";
+export * from "./episode";
+export * from "./episodeInput";
+export * from "./episodeUpdate";
+export * from "./errorResponse";
 export * from "./healthStatus";
+export * from "./listMoviesParams";
+export * from "./listSeriesParams";
+export * from "./movie";
+export * from "./movieInput";
+export * from "./movieUpdate";
+export * from "./season";
+export * from "./seasonInput";
+export * from "./seasonUpdate";
+export * from "./series";
+export * from "./seriesInput";
+export * from "./seriesUpdate";
+export * from "./stats";
