@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminAuth } from "@/context/AuthContext";
 import { Search, Trash2, UserCheck, UserX, Crown, Users, ShieldCheck } from "lucide-react";
+import { API_URL } from "@/lib/api-url";
 
 interface User {
   id: number;
@@ -48,7 +49,7 @@ export default function UsersList() {
   const { data: users, isLoading, error } = useQuery({
     queryKey: ["users"],
     queryFn: async (): Promise<User[]> => {
-      const res = await fetch("/api/users", {
+      const res = await fetch(`${API_URL}/api/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch users");

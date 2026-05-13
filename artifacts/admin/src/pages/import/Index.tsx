@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, XCircle, Loader2, Search, Download, ExternalLink, Info, Film, Tv, Zap } from "lucide-react";
+import { API_URL } from "@/lib/api-url";
 
 interface PreviewItem {
   tmdbId: number;
@@ -79,7 +80,7 @@ export default function ImportPage() {
 
   const importMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/tmdb/bulk-import", {
+      const res = await fetch(`${API_URL}/api/tmdb/bulk-import`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...getAuthHeaders() },
         body: JSON.stringify({ ids: parsedIds, type, status }),
@@ -108,7 +109,7 @@ export default function ImportPage() {
 
   const quickImportMutation = useMutation({
     mutationFn: async (item: PreviewItem) => {
-      const res = await fetch("/api/tmdb/bulk-import", {
+      const res = await fetch(`${API_URL}/api/tmdb/bulk-import`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...getAuthHeaders() },
         body: JSON.stringify({ ids: [item.tmdbId], type: item.type === "movie" ? "movie" : "tv", status }),

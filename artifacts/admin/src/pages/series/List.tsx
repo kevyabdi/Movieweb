@@ -20,9 +20,10 @@ import { Pencil, Trash2, CheckCircle, XCircle, Search, Plus, ListTree, CheckChec
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
+import { API_URL } from "@/lib/api-url";
 
 async function bulkAction(ids: number[], action: "publish" | "draft" | "delete") {
-  const res = await fetch("/api/bulk-action", {
+  const res = await fetch(`${API_URL}/api/bulk-action`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ids, action, type: "series" }),

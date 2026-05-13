@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "@/lib/api-url";
 
 export interface Banner {
   id: number;
@@ -24,7 +25,7 @@ export function BannersProvider({ children }: { children: React.ReactNode }) {
   const { data: banners = [], isLoading } = useQuery<Banner[]>({
     queryKey: ["/api/banners/active"],
     queryFn: async () => {
-      const res = await fetch("/api/banners/active");
+      const res = await fetch(`${API_URL}/api/banners/active`);
       if (!res.ok) return [];
       return res.json() as Promise<Banner[]>;
     },

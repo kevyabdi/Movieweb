@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2, Eye, EyeOff, ImageIcon, Film, Tv } from "lucide-react";
 import { TmdbSearch } from "@/components/TmdbSearch";
+import { API_URL } from "@/lib/api-url";
 
 const TOKEN_KEY = "fiirso_admin_token";
 
@@ -41,7 +42,7 @@ interface Banner {
 const emptyForm = { title: "", subtitle: "", imageUrl: "", linkUrl: "", buttonLabel: "Watch Now", sortOrder: 0 };
 
 async function fetchBanners(): Promise<Banner[]> {
-  const res = await fetch("/api/banners");
+  const res = await fetch(`${API_URL}/api/banners`);
   if (!res.ok) throw new Error("Failed");
   return res.json() as Promise<Banner[]>;
 }

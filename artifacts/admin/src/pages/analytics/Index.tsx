@@ -6,6 +6,7 @@ import {
   XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend,
 } from "recharts";
 import { Users, Film, Tv, TrendingUp, UserCheck, UserX, Crown } from "lucide-react";
+import { API_URL } from "@/lib/api-url";
 
 interface OverviewData {
   users: {
@@ -37,17 +38,17 @@ const PLAN_COLORS: Record<string, string> = {
 const PIE_COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
 
 async function fetchOverview(): Promise<OverviewData> {
-  const res = await fetch("/api/analytics/overview");
+  const res = await fetch(`${API_URL}/api/analytics/overview`);
   if (!res.ok) throw new Error("Failed");
   return res.json() as Promise<OverviewData>;
 }
 async function fetchSignups(): Promise<SignupRow[]> {
-  const res = await fetch("/api/analytics/signups");
+  const res = await fetch(`${API_URL}/api/analytics/signups`);
   if (!res.ok) throw new Error("Failed");
   return res.json() as Promise<SignupRow[]>;
 }
 async function fetchTimeline(): Promise<TimelineRow[]> {
-  const res = await fetch("/api/analytics/content-timeline");
+  const res = await fetch(`${API_URL}/api/analytics/content-timeline`);
   if (!res.ok) throw new Error("Failed");
   return res.json() as Promise<TimelineRow[]>;
 }

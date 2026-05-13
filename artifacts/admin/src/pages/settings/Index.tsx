@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Shield, Settings, Loader2, CheckCircle2, AlertCircle, Key } from "lucide-react";
 import SecurityPage from "./Security";
 import { useAdminAuth } from "@/context/AuthContext";
+import { API_URL } from "@/lib/api-url";
 
 type Tab = "general" | "security";
 
@@ -17,7 +18,7 @@ function GeneralSettings() {
   const [apiStatus, setApiStatus] = useState<null | { status: string; uptime?: number }>(null);
 
   useEffect(() => {
-    fetch("/api/health")
+    fetch(`${API_URL}/api/health`)
       .then(r => r.json() as Promise<{ status: string; uptime?: number }>)
       .then(d => setApiStatus(d))
       .catch(() => setApiStatus({ status: "error" }));
@@ -27,7 +28,7 @@ function GeneralSettings() {
     setTmdbStatus("checking");
     setTmdbError("");
     try {
-      const res = await fetch("/api/tmdb/search?q=test&type=movie", {
+      const res = await fetch(`${API_URL}/api/tmdb/search?q=test&type=movie`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Shield, Eye, EyeOff, Loader2, CheckCircle2, AlertCircle, KeyRound } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdminAuth } from "@/context/AuthContext";
+import { API_URL } from "@/lib/api-url";
 
 export default function SecurityPage() {
   const { token } = useAdminAuth();
@@ -42,7 +43,7 @@ export default function SecurityPage() {
 
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/admin/change-password", {
+      const res = await fetch(`${API_URL}/api/auth/admin/change-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import { setAuthTokenGetter } from "@workspace/api-client-react";
+import { API_URL } from "@/lib/api-url";
 
 interface AdminUser {
   id: number;
@@ -41,7 +42,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Verify token server-side — never trust localStorage user object alone
-    fetch("/api/auth/admin/verify", {
+    fetch(`${API_URL}/api/auth/admin/verify`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
@@ -60,7 +61,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await fetch("/api/auth/admin/login", {
+    const res = await fetch(`${API_URL}/api/auth/admin/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

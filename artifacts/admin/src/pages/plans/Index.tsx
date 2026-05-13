@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Crown, Loader2, RotateCcw } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { API_URL } from "@/lib/api-url";
 
 interface Plan {
   id: string;
@@ -24,7 +25,7 @@ interface Plan {
 }
 
 async function fetchPlans(): Promise<Plan[]> {
-  const res = await fetch("/api/plans");
+  const res = await fetch(`${API_URL}/api/plans`);
   if (!res.ok) throw new Error("Failed");
   return res.json() as Promise<Plan[]>;
 }
@@ -71,7 +72,7 @@ export default function PlansPage() {
 
   const resetMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/plans/reset", { method: "POST" });
+      const res = await fetch(`${API_URL}/api/plans/reset`, { method: "POST" });
       if (!res.ok) throw new Error("Failed");
       return res.json();
     },

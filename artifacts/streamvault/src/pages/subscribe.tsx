@@ -4,6 +4,7 @@ import { useLocation } from "wouter";
 import { ChevronLeft, Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "@/lib/api-url";
 
 interface ApiPlan {
   id: string;
@@ -45,7 +46,7 @@ export default function Subscribe() {
   const { data: allPlans, isLoading } = useQuery<ApiPlan[]>({
     queryKey: ["/api/plans"],
     queryFn: async () => {
-      const res = await fetch("/api/plans");
+      const res = await fetch(`${API_URL}/api/plans`);
       if (!res.ok) throw new Error("Failed to fetch plans");
       return res.json() as Promise<ApiPlan[]>;
     },

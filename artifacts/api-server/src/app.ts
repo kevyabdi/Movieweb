@@ -25,7 +25,35 @@ app.use(
     },
   }),
 );
-app.use(cors());
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? "")
+        .split(",")
+        .map((o) => o.trim())
+        .filter(Boolean);
+
+      if (
+        process.env.NODE_ENV !== "production" ||
+        allowedOrigins.length === 0 ||
+        allowedOrigins.includes("*")
+      ) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.some((o) => origin === o || origin.endsWith(`.${o}`))) {
+        return callback(null, true);
+      }
+
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
