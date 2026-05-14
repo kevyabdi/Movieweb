@@ -1,7 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAdminAuth } from "@/context/AuthContext";
-import { Clapperboard, Loader2, Eye, EyeOff, AlertCircle, Info } from "lucide-react";
+import { API_URL } from "@/lib/api-url";
+import { Clapperboard, Loader2, Eye, EyeOff, AlertCircle, Info, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+type ApiStatus = "checking" | "ok" | "degraded" | "unreachable";
+
+interface HealthData {
+  status: "ok" | "degraded";
+  latencyMs: number;
+  checks: {
+    database: { status: "ok" | "error"; latencyMs: number | null; error?: string };
+  };
+}
+
+function useApiStatus() {
+  const [status, setStatus] = useState<ApiStatus>("checking");
+  const [health, setHealth] = useState<HealthData | null>(null);
+  const [checking, setChecking] = useState(false);
+
+  const check = async () => {
+    setChecking(true);
+    try {
+      const res = await fetch(`${API_URL}/api/health`, { signal: AbortSignal.timeout(8000) });
+      const data: HealthData = await res.json();
+      setHealth(data);
+      setStatus(data.status === "ok" ? "ok" : "degraded");
+    } catch {
+      setHealth(null);
+      setStatus("unreachable");
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  useEffect(() => {
+    check();
+  }, []);
+
+  return { status, health, checking, recheck: check };
+}
+
+const STATUS_CONFIG: Record<ApiStatus, { dot: string; label: string; text: string }> = {
+  checking: { dot: "bg-muted-foreground animate-pulse", label: "Checking…", text: "text-muted-foreground" },
+  ok:        { dot: "bg-emerald-500",                  label: "API online", text: "text-emerald-500" },
+  degraded:  { dot: "bg-amber-500 animate-pulse",      label: "DB issue",   text: "text-amber-500" },
+  unreachable:{ dot: "bg-destructive animate-pulse",   label: "Unreachable",text: "text-destructive" },
+};
 
 export default function LoginPage() {
   const { login } = useAdminAuth();
@@ -10,8 +55,10 @@ export default function LoginPage() {
   const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { status, health, checking, recheck } = useApiStatus();
 
   const isAccessDenied = error.toLowerCase().includes("access denied") || error.toLowerCase().includes("admin privileges");
+  const cfg = STATUS_CONFIG[status];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +88,33 @@ export default function LoginPage() {
           </div>
           <h1 className="text-xl font-bold tracking-tight">Fiirso <span className="text-violet-400">Admin</span></h1>
           <p className="text-sm text-muted-foreground mt-1">Sign in to manage content</p>
+        </div>
+
+        {/* API Status Badge */}
+        <div className="mb-5 flex items-center justify-between rounded-xl border border-border/50 bg-muted/20 px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            <span className={`h-2 w-2 rounded-full shrink-0 ${cfg.dot}`} />
+            <span className={`text-xs font-medium ${cfg.text}`}>{cfg.label}</span>
+            {health && status === "ok" && (
+              <span className="text-[10px] text-muted-foreground/50">
+                {health.latencyMs}ms · DB {health.checks.database.latencyMs}ms
+              </span>
+            )}
+            {status === "degraded" && health?.checks.database.error && (
+              <span className="text-[10px] text-amber-500/70 truncate max-w-[120px]" title={health.checks.database.error}>
+                {health.checks.database.error}
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={recheck}
+            disabled={checking}
+            className="text-muted-foreground/40 hover:text-muted-foreground transition-colors disabled:opacity-40"
+            title="Recheck API status"
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${checking ? "animate-spin" : ""}`} />
+          </button>
         </div>
 
         {/* Form */}
