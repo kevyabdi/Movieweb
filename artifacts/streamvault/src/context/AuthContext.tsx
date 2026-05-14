@@ -32,6 +32,30 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 const TOKEN_KEY = "fiirso_user_token";
 const USER_KEY = "fiirso_user";
 
+async function safeJson(res: Response): Promise<Record<string, unknown>> {
+  try {
+    return await res.json() as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
+async function extractError(res: Response, fallback: string): Promise<string> {
+  const body = await safeJson(res);
+  if (typeof body.error === "string" && body.error) return body.error;
+  if (res.status === 404) return "API server not found. Check that VITE_API_URL is set correctly in Vercel.";
+  if (res.status === 503 || res.status === 502) return "API server is unavailable. Check your environment variables in Vercel.";
+  return fallback;
+}
+
+async function apiFetch(url: string, options?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, options);
+  } catch {
+    throw new Error("Cannot reach the server. Make sure the API is deployed and environment variables are set in Vercel.");
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -66,23 +90,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.status === 401 || res.status === 403) {
-          // Token invalid or user banned — force logout
           localStorage.removeItem(TOKEN_KEY);
           localStorage.removeItem(USER_KEY);
           setState({ user: null, token: null, isLoading: false });
           return;
         }
         if (!res.ok) return;
-        const data = await res.json() as { user: AuthUser };
-        const fresh = data.user;
-        // If banned, force logout immediately
+        const data = await safeJson(res);
+        const fresh = data.user as AuthUser | undefined;
+        if (!fresh) return;
         if (fresh.isActive === false) {
           localStorage.removeItem(TOKEN_KEY);
           localStorage.removeItem(USER_KEY);
           setState({ user: null, token: null, isLoading: false });
           return;
         }
-        // Sync plan/role/name changes without re-login
         setState(prev => {
           if (!prev.user) return prev;
           const changed =
@@ -101,13 +123,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    // Poll every 4 seconds for near-instant ban/role/plan propagation
     const id = setInterval(poll, 4000);
-
-    // Also poll immediately when the tab regains focus or becomes visible
-    const onVisible = () => {
-      if (document.visibilityState === "visible") poll();
-    };
+    const onVisible = () => { if (document.visibilityState === "visible") poll(); };
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("focus", poll);
 
@@ -119,32 +136,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await fetch(`${API_URL}/api/auth/login`, {
+    const res = await apiFetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Login failed");
+      const msg = await extractError(res, "Login failed");
+      throw new Error(msg);
     }
-    const data = await res.json() as { token: string; user: AuthUser };
+    const data = await safeJson(res) as { token?: string; user?: AuthUser };
+    if (!data.token || !data.user) throw new Error("Unexpected server response. Please try again.");
     localStorage.setItem(TOKEN_KEY, data.token);
     localStorage.setItem(USER_KEY, JSON.stringify(data.user));
     setState({ user: data.user, token: data.token, isLoading: false });
   };
 
   const register = async (email: string, password: string, name: string) => {
-    const res = await fetch(`${API_URL}/api/auth/register`, {
+    const res = await apiFetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, name }),
     });
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Registration failed");
+      const msg = await extractError(res, "Registration failed");
+      throw new Error(msg);
     }
-    const data = await res.json() as { token: string; user: AuthUser };
+    const data = await safeJson(res) as { token?: string; user?: AuthUser };
+    if (!data.token || !data.user) throw new Error("Unexpected server response. Please try again.");
     localStorage.setItem(TOKEN_KEY, data.token);
     localStorage.setItem(USER_KEY, JSON.stringify(data.user));
     setState({ user: data.user, token: data.token, isLoading: false });
@@ -159,56 +178,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateUser = async (fields: { name?: string; avatarUrl?: string | null }) => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) throw new Error("Not logged in");
-    const res = await fetch(`${API_URL}/api/auth/profile`, {
+    const res = await apiFetch(`${API_URL}/api/auth/profile`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(fields),
     });
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Failed to update profile");
+      const msg = await extractError(res, "Failed to update profile");
+      throw new Error(msg);
     }
-    const data = await res.json() as { user: AuthUser };
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-    setState(s => ({ ...s, user: data.user }));
+    const data = await safeJson(res) as { user?: AuthUser };
+    if (data.user) {
+      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      setState(s => ({ ...s, user: data.user! }));
+    }
   };
 
   const changePassword = async (currentPassword: string, newPassword: string) => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) throw new Error("Not logged in");
-    const res = await fetch(`${API_URL}/api/auth/change-password`, {
+    const res = await apiFetch(`${API_URL}/api/auth/change-password`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ currentPassword, newPassword }),
     });
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Failed to change password");
+      const msg = await extractError(res, "Failed to change password");
+      throw new Error(msg);
     }
   };
 
   const forgotPassword = async (email: string): Promise<{ resetToken?: string }> => {
-    const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
+    const res = await apiFetch(`${API_URL}/api/auth/forgot-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Failed to send reset link");
+      const msg = await extractError(res, "Failed to send reset link");
+      throw new Error(msg);
     }
-    return res.json() as Promise<{ resetToken?: string }>;
+    return safeJson(res) as Promise<{ resetToken?: string }>;
   };
 
   const resetPassword = async (token: string, newPassword: string) => {
-    const res = await fetch(`${API_URL}/api/auth/reset-password`, {
+    const res = await apiFetch(`${API_URL}/api/auth/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, newPassword }),
     });
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Failed to reset password");
+      const msg = await extractError(res, "Failed to reset password");
+      throw new Error(msg);
     }
   };
 
