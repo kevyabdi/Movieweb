@@ -60523,7 +60523,7 @@ function getPool() {
     connectionString,
     max: isProduction ? 2 : 10,
     idleTimeoutMillis: isProduction ? 1e4 : 3e4,
-    connectionTimeoutMillis: 1e4,
+    connectionTimeoutMillis: isProduction ? 5e3 : 1e4,
     ssl: isProduction ? { rejectUnauthorized: false } : void 0
   });
   return _pool;

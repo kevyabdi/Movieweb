@@ -23,7 +23,7 @@ function getPool(): pg.Pool {
     connectionString,
     max: isProduction ? 2 : 10,
     idleTimeoutMillis: isProduction ? 10_000 : 30_000,
-    connectionTimeoutMillis: 10_000,
+    connectionTimeoutMillis: isProduction ? 5_000 : 10_000,
     ssl: isProduction ? { rejectUnauthorized: false } : undefined,
   });
 

@@ -22,10 +22,30 @@ function useApiStatus() {
   const check = async () => {
     setChecking(true);
     try {
-      const res = await fetch(`${API_URL}/api/health`, { signal: AbortSignal.timeout(8000) });
-      const data: HealthData = await res.json();
-      setHealth(data);
-      setStatus(data.status === "ok" ? "ok" : "degraded");
+      // Step 1: fast ping (no DB) — proves the API is reachable at all.
+      // Use a generous timeout so a cold serverless start doesn't look like
+      // "Unreachable" when the function just needs a moment to boot.
+      const ping = await fetch(`${API_URL}/api/healthz`, {
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!ping.ok) {
+        setHealth(null);
+        setStatus("unreachable");
+        return;
+      }
+      // Step 2: full health check (includes DB) — show degraded if DB is down.
+      try {
+        const res = await fetch(`${API_URL}/api/health`, {
+          signal: AbortSignal.timeout(10000),
+        });
+        const data: HealthData = await res.json();
+        setHealth(data);
+        setStatus(data.status === "ok" ? "ok" : "degraded");
+      } catch {
+        // API is reachable but DB check timed out — show degraded, not unreachable.
+        setHealth(null);
+        setStatus("degraded");
+      }
     } catch {
       setHealth(null);
       setStatus("unreachable");
