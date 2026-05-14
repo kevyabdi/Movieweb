@@ -116,11 +116,13 @@ async function buildAll() {
     plugins: [esbuildPluginPino({ transports: ["pino-pretty"] })],
   });
 
-  // Serverless bundle (used by Vercel) — same config, no pino workers needed
+  // Serverless bundle (used by Vercel) — output directly to api/index.js as a
+  // self-contained ESM file so Vercel can serve it with zero build steps.
   await esbuild({
     ...sharedConfig,
     entryPoints: [path.resolve(artifactDir, "src/serverless.ts")],
-    outfile: path.resolve(distDir, "serverless.mjs"),
+    outfile: path.resolve(artifactDir, "api/index.js"),
+    outExtension: {},   // keep .js extension (ESM, matches package.json "type":"module")
     plugins: [],
   });
 }
