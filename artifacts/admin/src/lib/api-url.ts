@@ -1,3 +1,3 @@
-// Admin calls the dedicated API server at api.rajolabs.com.
-// Override with VITE_API_URL if deploying to a different domain.
-export const API_URL: string = import.meta.env.VITE_API_URL ?? "https://api.rajolabs.com";
+// API is co-hosted on the same domain (/api/...) — use relative paths by default.
+// Set VITE_API_URL only if you need to point at a different backend (e.g. local dev).
+export const API_URL: string = import.meta.env.VITE_API_URL ?? "";

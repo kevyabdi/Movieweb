@@ -104,11 +104,13 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
 };
 
 const distDir = path.resolve(artifactDir, "dist");
-// Serverless bundle destination — also copied into streamvault so Vercel
-// can serve both the SPA and the API from a single project (rajolabs.com).
+// Serverless bundle destination — copied into streamvault and admin so Vercel
+// can serve both the SPA and the API from a single project on each domain.
 const serverlessDest = path.resolve(artifactDir, "api/index.js");
 const streamvaultApiDir = path.resolve(artifactDir, "../streamvault/api");
 const streamvaultDest = path.resolve(streamvaultApiDir, "index.js");
+const adminApiDir = path.resolve(artifactDir, "../admin/api");
+const adminDest = path.resolve(adminApiDir, "index.js");
 
 async function buildAll() {
   await rm(distDir, { recursive: true, force: true });
@@ -133,10 +135,14 @@ async function buildAll() {
     plugins: [],
   });
 
-  // Copy bundle into streamvault for combined deployment
+  // Copy bundle into streamvault and admin for combined deployments
   await mkdir(streamvaultApiDir, { recursive: true });
   await copyFile(serverlessDest, streamvaultDest);
   console.log(`[build] Copied serverless bundle → ${streamvaultDest}`);
+
+  await mkdir(adminApiDir, { recursive: true });
+  await copyFile(serverlessDest, adminDest);
+  console.log(`[build] Copied serverless bundle → ${adminDest}`);
 }
 
 buildAll().catch((err) => {

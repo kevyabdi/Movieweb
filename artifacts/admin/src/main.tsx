@@ -3,8 +3,9 @@ import { setBaseUrl } from "@workspace/api-client-react";
 import App from "./App";
 import "./index.css";
 
-// Admin panel calls the dedicated API server at api.rajolabs.com.
-const apiUrl = (import.meta.env.VITE_API_URL as string | undefined) ?? "https://api.rajolabs.com";
-setBaseUrl(apiUrl);
+// API is co-hosted on admin.rajolabs.com (/api/...) — no base URL needed.
+// Set VITE_API_URL only when pointing at a different backend (e.g. local dev).
+const apiUrl = import.meta.env.VITE_API_URL as string | undefined;
+if (apiUrl) setBaseUrl(apiUrl);
 
 createRoot(document.getElementById("root")!).render(<App />);
