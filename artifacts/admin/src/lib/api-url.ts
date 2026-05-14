@@ -1,3 +1,3 @@
-// Admin calls the API on rajolabs.com (the streamvault domain where the API is hosted).
-// Override with VITE_API_URL if needed.
-export const API_URL: string = import.meta.env.VITE_API_URL ?? "https://rajolabs.com";
+// Admin calls the dedicated API server at api.rajolabs.com.
+// Override with VITE_API_URL if deploying to a different domain.
+export const API_URL: string = import.meta.env.VITE_API_URL ?? "https://api.rajolabs.com";
