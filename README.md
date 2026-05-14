@@ -1,6 +1,15 @@
 # Fiirso — Streaming Platform
 
-A full-stack streaming platform with a viewer app, admin panel, and REST API. Built with React + Vite on the frontend and Express on the backend, designed for Vercel + Supabase deployment.
+A full-stack streaming platform with a viewer app (rajolabs.com), admin panel (admin.rajolabs.com), and a REST API backend. Built with React + Vite, Express, Drizzle ORM, and Supabase PostgreSQL. Designed for one-click Vercel deployment.
+
+---
+
+## Live Demo
+
+| Site | URL |
+|------|-----|
+| Streaming App | https://rajolabs.com |
+| Admin Panel | https://admin.rajolabs.com |
 
 ---
 
@@ -8,15 +17,15 @@ A full-stack streaming platform with a viewer app, admin panel, and REST API. Bu
 
 - Browse and stream movies and TV series
 - Hero banners, featured/trending carousels, category filtering
-- Full-text search across content
-- User authentication (register, login, profile, password reset)
+- Full-text search across all content
+- User authentication — register, login, profile, password reset
 - Subscription plans
 - Actor pages and year-based browsing
-- Admin panel with content management (movies, series, seasons, episodes, banners, categories)
-- TMDB integration for importing content
+- Admin panel — manage movies, series, seasons, episodes, banners, categories
+- TMDB integration for importing content in bulk
 - Analytics dashboard
-- User management (roles, bans, plans)
-- JWT-based auth with admin and user token types
+- User management — roles, bans, subscription plans
+- JWT-based auth with separate admin and user token types
 
 ---
 
@@ -28,7 +37,7 @@ A full-stack streaming platform with a viewer app, admin panel, and REST API. Bu
 | State | TanStack Query v5 |
 | Routing | Wouter |
 | Backend | Express 5, Node.js 24 |
-| Database | PostgreSQL (Supabase) |
+| Database | PostgreSQL via Supabase |
 | ORM | Drizzle ORM |
 | Validation | Zod |
 | Auth | JWT (jsonwebtoken) + bcryptjs |
@@ -43,36 +52,56 @@ A full-stack streaming platform with a viewer app, admin panel, and REST API. Bu
 ```
 fiirso/
 ├── artifacts/
-│   ├── streamvault/          # Viewer frontend (React + Vite)
+│   ├── streamvault/          # Viewer frontend — rajolabs.com
 │   │   ├── src/
-│   │   │   ├── pages/        # Route pages
+│   │   │   ├── pages/        # Route pages (home, movie, series, search…)
 │   │   │   ├── components/   # UI components
-│   │   │   ├── context/      # Auth, content, banners context
-│   │   │   └── lib/          # Utilities, API URL helper
-│   │   └── vercel.json       # Vercel SPA config
-│   ├── admin/                # Admin panel (React + Vite)
+│   │   │   ├── context/      # Auth, banners context
+│   │   │   └── lib/          # api-url.ts, utils
+│   │   └── vercel.json
+│   ├── admin/                # Admin panel — admin.rajolabs.com
 │   │   ├── src/
-│   │   │   ├── pages/        # Admin route pages
-│   │   │   ├── components/   # Admin UI components
+│   │   │   ├── pages/        # Movies, series, users, analytics, settings…
+│   │   │   ├── components/   # Admin-specific UI
 │   │   │   └── context/      # Admin auth context
-│   │   └── vercel.json       # Vercel SPA config
-│   └── api-server/           # Express REST API
+│   │   └── vercel.json
+│   └── api-server/           # Express REST API backend
 │       ├── src/
-│       │   ├── routes/       # Route handlers (movies, series, auth, …)
-│       │   ├── app.ts        # Express app setup
-│       │   └── index.ts      # Server entrypoint (Replit)
+│       │   ├── routes/       # auth, movies, series, banners, users, tmdb…
+│       │   ├── app.ts        # Express + CORS setup
+│       │   └── index.ts      # Server entry (Replit dev)
 │       ├── api/
-│       │   └── index.ts      # Vercel serverless handler
-│       └── vercel.json       # Vercel API routing
+│       │   └── index.js      # Vercel serverless handler (pre-built)
+│       └── vercel.json
 ├── lib/
-│   ├── db/                   # Drizzle ORM + PostgreSQL schema
+│   ├── db/                   # Drizzle ORM schema + migrations
 │   ├── api-spec/             # OpenAPI spec (source of truth)
 │   ├── api-zod/              # Generated Zod schemas
 │   └── api-client-react/     # Generated React Query hooks
-├── .env.example              # Environment variable reference
-├── pnpm-workspace.yaml       # Workspace config
+├── .env.example              # All required environment variables
+├── pnpm-workspace.yaml
 └── README.md
 ```
+
+---
+
+## How It Works
+
+```
+User Browser
+    │
+    ├─▶ rajolabs.com          (Vercel — streamvault frontend)
+    │       └─▶ /api/*  ──▶  api.rajolabs.com  (Vercel — api-server)
+    │                               └─▶ Supabase PostgreSQL
+    │
+    └─▶ admin.rajolabs.com    (Vercel — admin frontend)
+            └─▶ All API calls ──▶  api.rajolabs.com
+```
+
+- The **API server** is the only service that talks to the database.
+- Both frontends are static sites that call the API over HTTPS.
+- Authentication uses **JWT tokens** stored in `localStorage`. The API validates every request.
+- The first time you log in with `ADMIN_EMAIL` + `ADMIN_PASSWORD`, the API automatically creates the admin account in the database.
 
 ---
 
@@ -82,140 +111,155 @@ fiirso/
 
 - Node.js 20+
 - pnpm 9+
-- A PostgreSQL database (Supabase or local)
+- A PostgreSQL database (Supabase free tier works)
 
-### 1. Install dependencies
+### 1. Clone and install
 
 ```bash
+git clone https://github.com/kevyabdi/Movieweb.git
+cd Movieweb
 pnpm install
 ```
 
 ### 2. Set up environment variables
 
-Copy `.env.example` to `.env` and fill in your values:
-
 ```bash
 cp .env.example .env
 ```
 
-Required variables:
+Fill in your values:
 
 ```env
-DATABASE_URL=postgresql://...          # Supabase connection string
-SESSION_SECRET=a-long-random-string
+# Supabase → Settings → Database → Connection string (use port 6543)
+DATABASE_URL=postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres
+
+# Any long random string (32+ characters)
+SESSION_SECRET=change-me-to-a-long-random-string-min-32-chars
+
+# These become your admin login credentials on first login
 ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=your-admin-password
+ADMIN_PASSWORD=your-secure-admin-password
 ```
 
-### 3. Push database schema
+### 3. Push the database schema
 
 ```bash
 pnpm --filter @workspace/db run push
 ```
 
-### 4. Start all services
-
-Each service runs in its own terminal:
+### 4. Start all services (3 terminals)
 
 ```bash
-# API server (port 8080)
+# Terminal 1 — API server (port 8080)
 pnpm --filter @workspace/api-server run dev
 
-# Viewer frontend (port 5173)
-PORT=5173 BASE_PATH=/ pnpm --filter @workspace/streamvault run dev
+# Terminal 2 — Viewer frontend (port 5173)
+PORT=5173 pnpm --filter @workspace/streamvault run dev
 
-# Admin panel (port 5174)
-PORT=5174 BASE_PATH=/ pnpm --filter @workspace/admin run dev
+# Terminal 3 — Admin panel (port 5174)
+PORT=5174 pnpm --filter @workspace/admin run dev
 ```
+
+Then open:
+- Viewer: http://localhost:5173
+- Admin: http://localhost:5174
+- API health check: http://localhost:8080/api/healthz
 
 ---
 
 ## Supabase Setup
 
-1. Create a project at [supabase.com](https://supabase.com)
+1. Create a free project at [supabase.com](https://supabase.com)
 2. Go to **Settings → Database → Connection string**
-3. Copy the **Transaction pooler** URL (port `6543`) — this is required for serverless/Vercel
-4. Paste it as your `DATABASE_URL`
+3. Select **Transaction pooler** (port `6543`) — required for serverless/Vercel
+4. Copy the URL and paste it as `DATABASE_URL`
 5. Run `pnpm --filter @workspace/db run push` to create all tables
-
-### Connection string format
-
-```
-postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres
-```
 
 ---
 
-## Vercel Deployment
+## Vercel Deployment (Step-by-Step)
 
-The project deploys as **three separate Vercel projects**:
+The project deploys as **3 separate Vercel projects** from the same GitHub repo.
 
-| Project | Root Directory | Purpose |
-|---------|---------------|---------|
-| `fiirso-api` | `artifacts/api-server` | REST API (serverless) |
-| `fiirso-app` | `artifacts/streamvault` | Viewer frontend |
-| `fiirso-admin` | `artifacts/admin` | Admin panel |
+### Step 1 — Deploy the API Server
 
-### Step 1 — Deploy the API
+1. Go to [vercel.com](https://vercel.com) → **Add New Project** → import `kevyabdi/Movieweb`
+2. Set **Root Directory** → `artifacts/api-server`
+3. Framework Preset → **Other**
+4. Add these **Environment Variables**:
 
-1. Import the repo into Vercel
-2. Set **Root Directory** to `artifacts/api-server`
-3. Framework: **Other**
-4. Add these environment variables in the Vercel dashboard:
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | Your Supabase pooler connection string (port 6543) |
+| `SESSION_SECRET` | A random string, 32+ characters |
+| `ADMIN_EMAIL` | The email you want for the admin account |
+| `ADMIN_PASSWORD` | The password you want for the admin account |
+| `NODE_ENV` | `production` |
+| `ALLOWED_ORIGINS` | `https://rajolabs.com,https://admin.rajolabs.com` |
+| `TMDB_API_KEY` | Your TMDB API key *(optional, for content import)* |
 
-```
-DATABASE_URL        = your Supabase pooler connection string
-SESSION_SECRET      = a long random string (32+ chars)
-ADMIN_EMAIL         = admin@example.com
-ADMIN_PASSWORD      = your admin password
-ALLOWED_ORIGINS     = https://fiirso-app.vercel.app,https://fiirso-admin.vercel.app
-NODE_ENV            = production
-TMDB_API_KEY        = your TMDB key (optional)
-```
+5. Click **Deploy** and note the URL (e.g. `https://your-api.vercel.app`)
 
-5. Deploy — note the deployed URL (e.g. `https://fiirso-api.vercel.app`)
+### Step 2 — Deploy the Viewer (rajolabs.com)
 
-### Step 2 — Deploy the Viewer Frontend
-
-1. Import the same repo, new project
-2. Set **Root Directory** to `artifacts/streamvault`
-3. Framework: **Vite**
+1. **Add New Project** → same repo
+2. **Root Directory** → `artifacts/streamvault`
+3. Framework → **Vite**
 4. Add environment variable:
 
-```
-VITE_API_URL = https://fiirso-api.vercel.app
-```
+| Variable | Value |
+|----------|-------|
+| `VITE_API_URL` | URL from Step 1 (e.g. `https://your-api.vercel.app`) |
 
-5. Deploy
+5. Deploy → assign your custom domain `rajolabs.com`
 
-### Step 3 — Deploy the Admin Panel
+### Step 3 — Deploy the Admin Panel (admin.rajolabs.com)
 
-1. Import the same repo, new project
-2. Set **Root Directory** to `artifacts/admin`
-3. Framework: **Vite**
+1. **Add New Project** → same repo
+2. **Root Directory** → `artifacts/admin`
+3. Framework → **Vite**
 4. Add environment variable:
 
-```
-VITE_API_URL = https://fiirso-api.vercel.app
-```
+| Variable | Value |
+|----------|-------|
+| `VITE_API_URL` | URL from Step 1 (e.g. `https://your-api.vercel.app`) |
 
-5. Deploy
-6. Go back to the API project → Settings → Environment Variables → update `ALLOWED_ORIGINS` to include the admin URL → Redeploy
+5. Deploy → assign your custom domain `admin.rajolabs.com`
+
+> **Important:** After deploying, go back to the API project → Settings → Environment Variables → update `ALLOWED_ORIGINS` to include the exact URLs of both frontends → click **Redeploy**.
+
+---
+
+## Why "Load failed" Happens
+
+This is the most common issue after deployment. It means the frontend cannot reach the API. Causes:
+
+1. **`VITE_API_URL` is missing or wrong** on the frontend Vercel project  
+   → Set it to the exact URL of your API deployment and **redeploy** (required — this value is baked in at build time)
+
+2. **`DATABASE_URL` or `SESSION_SECRET` is missing** on the API Vercel project  
+   → The API crashes on every request. Set both and redeploy the API.
+
+3. **CORS is blocking the request**  
+   → Set `ALLOWED_ORIGINS` on the API to include both frontend URLs (comma-separated, no trailing slashes)
+
+4. **Admin login says "Load failed" specifically**  
+   → Make sure `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set on the API project. The first login creates the account automatically.
 
 ---
 
 ## Environment Variables Reference
 
-| Variable | Where | Required | Description |
-|----------|-------|----------|-------------|
-| `DATABASE_URL` | API | ✅ | Supabase PostgreSQL connection string |
+| Variable | Project | Required | Description |
+|----------|---------|----------|-------------|
+| `DATABASE_URL` | API | ✅ | Supabase PostgreSQL pooler URL (port 6543) |
 | `SESSION_SECRET` | API | ✅ | JWT signing secret (32+ random chars) |
-| `ADMIN_EMAIL` | API | ✅ | Initial admin account email |
-| `ADMIN_PASSWORD` | API | ✅ | Initial admin account password |
-| `ALLOWED_ORIGINS` | API | Production | Comma-separated allowed frontend URLs |
-| `NODE_ENV` | API | Production | Set to `production` |
-| `TMDB_API_KEY` | API | Optional | For TMDB content import feature |
-| `VITE_API_URL` | Frontends | Production | Full URL of deployed API server |
+| `ADMIN_EMAIL` | API | ✅ | Admin account email (created on first login) |
+| `ADMIN_PASSWORD` | API | ✅ | Admin account password |
+| `ALLOWED_ORIGINS` | API | ✅ Production | Comma-separated list of allowed frontend URLs |
+| `NODE_ENV` | API | ✅ Production | Must be `production` |
+| `TMDB_API_KEY` | API | Optional | Enables TMDB content import |
+| `VITE_API_URL` | Frontends | ✅ Production | Full URL of the deployed API server |
 
 ---
 
@@ -224,32 +268,36 @@ VITE_API_URL = https://fiirso-api.vercel.app
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
 | `GET` | `/api/healthz` | — | Health check |
-| `POST` | `/api/auth/login` | — | User login |
 | `POST` | `/api/auth/register` | — | User registration |
-| `GET` | `/api/auth/me` | User | Current user profile |
+| `POST` | `/api/auth/login` | — | User login |
+| `GET` | `/api/auth/me` | User token | Current user profile |
+| `PATCH` | `/api/auth/profile` | User token | Update profile |
+| `PATCH` | `/api/auth/change-password` | User token | Change password |
+| `POST` | `/api/auth/forgot-password` | — | Request password reset |
+| `POST` | `/api/auth/reset-password` | — | Reset password with token |
 | `POST` | `/api/auth/admin/login` | — | Admin login |
+| `GET` | `/api/auth/admin/verify` | Admin token | Verify admin session |
 | `GET` | `/api/movies` | — | List movies |
 | `POST` | `/api/movies` | Admin | Create movie |
-| `GET` | `/api/movies/:id` | — | Get movie |
-| `GET` | `/api/series` | — | List series |
+| `GET` | `/api/movies/:id` | — | Get movie details |
+| `GET` | `/api/series` | — | List TV series |
 | `GET` | `/api/categories` | — | List categories |
-| `GET` | `/api/banners/active` | — | Active banners |
+| `GET` | `/api/banners/active` | — | Active hero banners |
+| `GET` | `/api/users` | Admin | List all users |
 | `GET` | `/api/stats` | Admin | Dashboard stats |
-| `GET` | `/api/analytics/overview` | Admin | Analytics |
-| `POST` | `/api/tmdb/bulk-import` | Admin | Import from TMDB |
+| `GET` | `/api/analytics/overview` | Admin | Analytics overview |
+| `GET` | `/api/plans` | — | Subscription plans |
+| `POST` | `/api/tmdb/bulk-import` | Admin | Bulk import from TMDB |
 
 ---
 
 ## Build Commands
 
 ```bash
-# Typecheck entire monorepo
-pnpm run typecheck
+# Install all dependencies
+pnpm install
 
-# Regenerate API types from OpenAPI spec
-pnpm --filter @workspace/api-spec run codegen
-
-# Push schema changes to database (dev)
+# Push DB schema to Supabase
 pnpm --filter @workspace/db run push
 
 # Build viewer frontend
@@ -260,46 +308,38 @@ pnpm --filter @workspace/admin run build
 
 # Build API server
 pnpm --filter @workspace/api-server run build
+
+# Typecheck entire monorepo
+pnpm run typecheck
+
+# Regenerate API types from OpenAPI spec
+pnpm --filter @workspace/api-spec run codegen
 ```
 
 ---
 
 ## Troubleshooting
 
-**API returns 404 on all routes**
-- Check that `DATABASE_URL` is set and the database is reachable
-- Verify the schema has been pushed: `pnpm --filter @workspace/db run push`
+**Login shows "Load failed"**
+- Missing `VITE_API_URL` on the frontend Vercel project, or missing `DATABASE_URL`/`SESSION_SECRET` on the API project. Set them all and redeploy.
 
-**CORS errors in the browser**
-- Set `ALLOWED_ORIGINS` in the API project to include your frontend URLs
-- Redeploy the API after updating
+**API returns 500 on all routes**
+- `DATABASE_URL` is wrong or the database is unreachable. Check your Supabase URL uses port `6543`.
 
-**Admin login fails after deployment**
-- Confirm `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set in the API project's Vercel env vars
-- The first login creates the admin account automatically
+**CORS errors in browser console**
+- `ALLOWED_ORIGINS` on the API must exactly match your frontend domains (e.g. `https://rajolabs.com,https://admin.rajolabs.com`). No trailing slashes.
+
+**Admin login says "Admin access required"**
+- `ADMIN_EMAIL` and `ADMIN_PASSWORD` must be set on the API. The account is created automatically on first login.
 
 **SPA routes return 404 on refresh**
-- The `vercel.json` in each frontend project configures rewrites — make sure it was not deleted
+- The `vercel.json` in each frontend handles this — do not delete it.
 
-**Supabase SSL errors**
-- The API uses `ssl: { rejectUnauthorized: false }` in production — this is required for Supabase
-
-**Build fails with "PORT is required"**
-- This only applies to Replit dev mode. Vercel builds do not require `PORT`
+**Vercel build fails**
+- Make sure the **Root Directory** is set correctly per project in the Vercel dashboard.
 
 **TMDB import not working**
-- Set `TMDB_API_KEY` in the API project's environment variables
-
----
-
-## Redeployments
-
-On Replit: all services auto-restart when you push code changes.
-
-On Vercel:
-- Push to your connected Git branch — Vercel automatically rebuilds and redeploys
-- Environment variable changes require a manual redeploy from the Vercel dashboard
-- Schema changes: run `pnpm --filter @workspace/db run push` against your Supabase database, then redeploy
+- Set `TMDB_API_KEY` on the API project's environment variables and redeploy.
 
 ---
 
