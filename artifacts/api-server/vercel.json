@@ -1,13 +1,15 @@
 {
   "version": 2,
+  "installCommand": "echo 'Handled by buildCommand'",
+  "buildCommand": "cd ../.. && pnpm install && node artifacts/api-server/build.mjs",
   "functions": {
-    "api/index.ts": {
+    "api/index.js": {
       "maxDuration": 30,
       "memory": 512
     }
   },
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index.ts" }
+    { "source": "/(.*)", "destination": "/api/index.js" }
   ],
   "headers": [
     {

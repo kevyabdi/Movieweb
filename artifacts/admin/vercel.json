@@ -1,6 +1,6 @@
 {
-  "framework": "vite",
-  "buildCommand": "cd ../.. && pnpm --filter @workspace/admin run build",
+  "installCommand": "echo 'Handled by buildCommand'",
+  "buildCommand": "cd ../.. && pnpm install && pnpm --filter @workspace/admin run build",
   "outputDirectory": "dist/public",
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
