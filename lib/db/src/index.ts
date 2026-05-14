@@ -14,9 +14,12 @@ const isProduction = process.env.NODE_ENV === "production";
 
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  max: isProduction ? 5 : 10,
-  idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 5_000,
+  // Keep pool tiny for serverless — each Vercel function instance gets its own pool
+  max: isProduction ? 2 : 10,
+  idleTimeoutMillis: isProduction ? 10_000 : 30_000,
+  // Higher timeout for Supabase cold starts
+  connectionTimeoutMillis: 10_000,
+  // Supabase always requires SSL; local Replit Postgres does not
   ssl: isProduction ? { rejectUnauthorized: false } : undefined,
 });
 

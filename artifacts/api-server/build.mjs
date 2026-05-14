@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build as esbuild } from "esbuild";
 import esbuildPluginPino from "esbuild-plugin-pino";
-import { rm } from "node:fs/promises";
+import { rm, copyFile, mkdir } from "node:fs/promises";
 
 // Plugins (e.g. 'esbuild-plugin-pino') may use `require` to resolve dependencies
 globalThis.require = createRequire(import.meta.url);
@@ -90,7 +90,7 @@ const sharedConfig = {
     "puppeteer-core",
     "electron",
   ],
-  sourcemap: "linked",
+  sourcemap: false,
   banner: {
     js: `import { createRequire as __bannerCrReq } from 'node:module';
 import __bannerPath from 'node:path';
@@ -104,6 +104,11 @@ globalThis.__dirname = __bannerPath.dirname(globalThis.__filename);
 };
 
 const distDir = path.resolve(artifactDir, "dist");
+// Serverless bundle destination — also copied into streamvault so Vercel
+// can serve both the SPA and the API from a single project (rajolabs.com).
+const serverlessDest = path.resolve(artifactDir, "api/index.js");
+const streamvaultApiDir = path.resolve(artifactDir, "../streamvault/api");
+const streamvaultDest = path.resolve(streamvaultApiDir, "index.js");
 
 async function buildAll() {
   await rm(distDir, { recursive: true, force: true });
@@ -113,18 +118,25 @@ async function buildAll() {
     ...sharedConfig,
     entryPoints: [path.resolve(artifactDir, "src/index.ts")],
     outdir: distDir,
+    outExtension: { ".js": ".mjs" },
     plugins: [esbuildPluginPino({ transports: ["pino-pretty"] })],
   });
 
-  // Serverless bundle (used by Vercel) — output directly to api/index.js as a
-  // self-contained ESM file so Vercel can serve it with zero build steps.
+  // Serverless bundle (used by Vercel) — self-contained ESM file.
+  // Written to api/index.js (api-server project) then copied into
+  // streamvault/api/index.js so the combined Vercel project can serve it.
   await esbuild({
     ...sharedConfig,
     entryPoints: [path.resolve(artifactDir, "src/serverless.ts")],
-    outfile: path.resolve(artifactDir, "api/index.js"),
-    outExtension: {},   // keep .js extension (ESM, matches package.json "type":"module")
+    outfile: serverlessDest,
+    outExtension: {},
     plugins: [],
   });
+
+  // Copy bundle into streamvault for combined deployment
+  await mkdir(streamvaultApiDir, { recursive: true });
+  await copyFile(serverlessDest, streamvaultDest);
+  console.log(`[build] Copied serverless bundle → ${streamvaultDest}`);
 }
 
 buildAll().catch((err) => {
