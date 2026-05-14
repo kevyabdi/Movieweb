@@ -60519,20 +60519,42 @@ var settingsTable = pgTable("settings", {
 
 // ../../lib/db/src/index.ts
 var { Pool: Pool3 } = esm_default;
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?"
-  );
-}
 var isProduction = process.env.NODE_ENV === "production";
-var pool = new Pool3({
-  connectionString: process.env.DATABASE_URL,
-  max: isProduction ? 5 : 10,
-  idleTimeoutMillis: 3e4,
-  connectionTimeoutMillis: 5e3,
-  ssl: isProduction ? { rejectUnauthorized: false } : void 0
+var _pool = null;
+var _db = null;
+function getPool() {
+  if (_pool) return _pool;
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error(
+      "DATABASE_URL is not set. Add it to your Vercel environment variables and redeploy."
+    );
+  }
+  _pool = new Pool3({
+    connectionString,
+    max: isProduction ? 2 : 10,
+    idleTimeoutMillis: isProduction ? 1e4 : 3e4,
+    connectionTimeoutMillis: 1e4,
+    ssl: isProduction ? { rejectUnauthorized: false } : void 0
+  });
+  return _pool;
+}
+var pool = new Proxy({}, {
+  get(_target, prop) {
+    return getPool()[prop];
+  }
 });
-var db = drizzle(pool, { schema: schema_exports });
+var db = new Proxy(
+  {},
+  {
+    get(_target, prop) {
+      if (!_db) {
+        _db = drizzle(getPool(), { schema: schema_exports });
+      }
+      return _db[prop];
+    }
+  }
+);
 
 // src/lib/serialize.ts
 function serializeRow(row) {
@@ -64109,4 +64131,3 @@ object-assign/index.js:
 safe-buffer/index.js:
   (*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> *)
 */
-//# sourceMappingURL=index.mjs.map
