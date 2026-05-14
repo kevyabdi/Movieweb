@@ -2,9 +2,12 @@
 
 # compiled output
 dist
-# Exception: pre-built Vercel serverless bundle (must be committed so Vercel can deploy without a complex build)
-!artifacts/api-server/dist/
-!artifacts/api-server/dist/serverless.mjs
+# Exception: pre-built Vercel serverless bundles (must be committed so Vercel can deploy without a build step)
+!artifacts/api-server/api/
+!artifacts/api-server/api/index.js
+!artifacts/api-server/api/index.js.map
+!artifacts/streamvault/api/
+!artifacts/streamvault/api/index.js
 tmp
 out-tsc
 *.tsbuildinfo
