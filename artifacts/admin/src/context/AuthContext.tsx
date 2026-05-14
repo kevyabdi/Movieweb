@@ -27,6 +27,22 @@ const USER_KEY = "fiirso_admin_user";
 
 setAuthTokenGetter(() => localStorage.getItem(TOKEN_KEY));
 
+async function safeJson(res: Response): Promise<Record<string, unknown>> {
+  try {
+    return await res.json() as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
+async function extractError(res: Response, fallback: string): Promise<string> {
+  const body = await safeJson(res);
+  if (typeof body.error === "string" && body.error) return body.error;
+  if (res.status === 404) return "API server not found. Check that VITE_API_URL is set correctly in Vercel.";
+  if (res.status === 503 || res.status === 502) return "API server is unavailable. Check your environment variables in Vercel.";
+  return fallback;
+}
+
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -41,17 +57,16 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Verify token server-side — never trust localStorage user object alone
     fetch(`${API_URL}/api/auth/admin/verify`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
         if (!res.ok) throw new Error("Invalid session");
-        const data = await res.json() as { user: AdminUser };
-        if (data.user.role !== "admin") throw new Error("Not admin");
-        // Refresh cached user data from server response
-        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-        setState({ user: data.user, token, isLoading: false });
+        const data = await safeJson(res);
+        const user = data.user as AdminUser | undefined;
+        if (!user || user.role !== "admin") throw new Error("Not admin");
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        setState({ user, token, isLoading: false });
       })
       .catch(() => {
         localStorage.removeItem(TOKEN_KEY);
@@ -61,22 +76,25 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await fetch(`${API_URL}/api/auth/admin/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    let res: Response;
+    try {
+      res = await fetch(`${API_URL}/api/auth/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch {
+      throw new Error("Cannot reach the server. Make sure the API is deployed and VITE_API_URL is set in Vercel.");
+    }
 
     if (!res.ok) {
-      const err = await res.json() as { error?: string };
-      throw new Error(err.error || "Login failed");
+      const msg = await extractError(res, "Login failed");
+      throw new Error(msg);
     }
 
-    const data = await res.json() as { token: string; user: AdminUser };
-
-    if (data.user.role !== "admin") {
-      throw new Error("Access denied. Admin privileges required.");
-    }
+    const data = await safeJson(res) as { token?: string; user?: AdminUser };
+    if (!data.token || !data.user) throw new Error("Unexpected server response. Please try again.");
+    if (data.user.role !== "admin") throw new Error("Access denied. Admin privileges required.");
 
     localStorage.setItem(TOKEN_KEY, data.token);
     localStorage.setItem(USER_KEY, JSON.stringify(data.user));
