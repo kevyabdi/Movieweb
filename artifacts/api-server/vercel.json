@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "installCommand": "echo 'Handled by buildCommand'",
-  "buildCommand": "cd ../.. && pnpm install && node artifacts/api-server/build.mjs",
+  "installCommand": "echo 'No install needed - bundle is pre-built'",
+  "buildCommand": "echo 'No build needed - bundle is pre-built'",
   "functions": {
     "api/index.js": {
       "maxDuration": 30,
